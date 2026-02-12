@@ -1,0 +1,122 @@
+.register-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e90ff 0%, #6a11cb 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.register-card {
+  width: min(760px, 100%);
+  border-radius: 16px;
+  padding: 32px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(0,0,0,.18);
+}
+
+/* dá espaçamento e evita “apertar” inputs */
+.register-card .row {
+  margin-left: -10px;
+  margin-right: -10px;
+}
+.register-card .row > [class*="col-"] {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.register-card h3 {
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.register-card .form-label {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 6px;
+}
+
+.register-card .form-control,
+.register-card .form-select {
+  border-radius: 10px;
+  min-height: 46px;
+  padding: 10px 12px;
+}
+
+.register-card textarea.form-control {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.register-card .btn {
+  height: 48px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+@media (max-width: 576px) {
+  .register-page { padding: 14px; }
+  .register-card { padding: 20px; border-radius: 14px; }
+}
+
+/* Bloco explicativo “balão” acima do textarea */
+.prompt-block .prompt-hint {
+  margin-top: 8px;
+  margin-bottom: 10px;
+  padding: 14px 14px;
+  border-radius: 12px;
+  background: #f8f9ff;
+  border: 1px solid rgba(13, 110, 253, 0.18);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  position: relative;
+}
+
+/* “setinha” do balão */
+.prompt-block .prompt-hint::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 18px;
+  width: 14px;
+  height: 14px;
+  background: #f8f9ff;
+  border-left: 1px solid rgba(13, 110, 253, 0.18);
+  border-top: 1px solid rgba(13, 110, 253, 0.18);
+  transform: rotate(45deg);
+}
+
+.prompt-block .prompt-hint-title {
+  font-weight: 700;
+  color: #0d6efd;
+  margin-bottom: 6px;
+}
+
+.prompt-block .prompt-hint p {
+  margin: 0 0 10px 0;
+  color: #495057;
+  line-height: 1.35;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.prompt-block .prompt-hint-examples-title {
+  font-weight: 700;
+  color: #343a40;
+  margin-bottom: 6px;
+}
+
+.prompt-block .prompt-hint-examples ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #495057;
+}
+
+.prompt-block .prompt-hint-examples li {
+  margin: 4px 0;
+}
+
+/* textarea mais confortável */
+.prompt-block textarea.form-control {
+  min-height: 140px;
+  line-height: 1.35;
+}

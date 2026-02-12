@@ -1,0 +1,106 @@
+<div class="container-fluid detail-page" *ngIf="!loading && client">
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <div class="detail-header mb-4">
+                <div class="detail-title">
+                    <h3 class="mb-1">{{ client.companyName }}</h3>
+                    <small class="text-muted">Detalhes do cliente</small>
+                </div>
+
+                <div class="detail-topbar">
+                    <button class="btn btn-light btn-sm detail-logout" (click)="logout()">
+                        Sair
+                    </button>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-sm-4 fw-bold">O seu identificador</div>
+                <div class="col-sm-8">{{ client.uuid }}</div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-sm-4 fw-bold">Nome</div>
+                <div class="col-sm-8">{{ client.fullName }}</div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-sm-4 fw-bold">E-mail</div>
+                <div class="col-sm-8">{{ client.email }}</div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-sm-4 fw-bold">Telefone</div>
+                <div class="col-sm-8">{{ client.phoneNumber }}</div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-sm-4 fw-bold">Website</div>
+                <div class="col-sm-8">
+                    <a [href]="client.companyWebsiteUrl" target="_blank">
+                        {{ client.companyWebsiteUrl }}
+                    </a>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-4 fw-bold">Idioma</div>
+                <div class="col-sm-8">{{ languageLabel(client.languageCode) }}</div>
+            </div>
+
+            <h5 class="mt-4">Informações para melhorar o atendimento</h5>
+            <p class="text-muted">
+                {{ client.promptText }}
+            </p>
+            <div class="d-flex justify-content-end mt-4">
+                <button class="btn btn-outline-primary" (click)="editClient()">
+                    Editar
+                </button>
+            </div>
+
+            <div *ngIf="client.subscription" class="mt-4">
+                <h5>Inscrição</h5>
+
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <strong>Status:</strong>
+                        {{ getSubscriptionStatus(client.subscription.status) }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Tipo da Inscrição:</strong>
+                        {{ getSubscriptionType(client.subscription.type) }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Limite de mensagens mensal:</strong> {{ client.subscription.monthlyMessageLimit }}
+                    </li>
+                    <li class="list-group-item subscription-period">
+                        <strong>Período:</strong>
+
+                        <div class="subscription-period-content">
+                            <span class="text-muted">Início:</span>
+                            {{ client.subscription.startDate | date:'dd/MM/yyyy' }}
+                            <span class="mx-2">→</span>
+                            <span class="text-muted">Fim:</span>
+                            {{ client.subscription.endDate | date:'dd/MM/yyyy' }}
+                        </div>
+
+                        <button type="button" class="btn btn-primary btn-sm subscription-renew">
+                            Renovar
+                        </button>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border"></div>
+</div>
+
+<div *ngIf="error" class="alert alert-danger container mt-4">
+    {{ error }}
+</div>

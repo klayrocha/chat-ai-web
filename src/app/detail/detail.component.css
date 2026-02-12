@@ -1,0 +1,287 @@
+/* =========================
+   PAGE (centraliza o card)
+   ========================= */
+.container.py-5 {
+  /* ignora o comportamento “container” do Bootstrap e centraliza tudo */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 32px !important;
+  padding-bottom: 32px !important;
+
+  /* mantém um respiro lateral */
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+/* =========================
+   MAIN CARD (largura controlada)
+   ========================= */
+.card.shadow-sm {
+  width: min(760px, 100%);
+  /* ✅ aqui é onde a largura “pega” de verdade */
+  margin: 0 auto;
+  border: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.12);
+  position: relative;
+}
+
+/* faixa decorativa no topo */
+.card.shadow-sm::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 120px;
+  background: linear-gradient(135deg, #1e90ff 0%, #6a11cb 100%);
+}
+
+/* conteúdo por cima */
+.card-body {
+  position: relative;
+  padding: 28px;
+  padding-top: 26px;
+}
+
+/* “caixa branca” abaixo do header */
+.card-body::after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  top: 92px;
+  bottom: 18px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.10);
+  z-index: 0;
+}
+
+/* garante que o conteúdo fique acima */
+.card-body>* {
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================
+   TOPBAR (Logout)
+   ========================= */
+.detail-topbar {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 3;
+}
+
+/* botão Sair: neutro (não vermelho) e bom no gradiente */
+.detail-logout {
+  border-radius: 10px;
+  padding: 6px 12px;
+  font-weight: 800;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  backdrop-filter: blur(6px);
+}
+
+.detail-logout:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.85);
+}
+
+/* =========================
+   TITLE
+   ========================= */
+h3.mb-4 {
+  margin: 0 0 18px 0 !important;
+  padding-right: 90px;
+  /* espaço pro botão */
+  color: #ffffff;
+  font-weight: 900;
+  letter-spacing: -0.3px;
+  text-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+}
+
+/* ✅ FIX: primeira row não cola no topo */
+h3.mb-4+.row.mb-2 {
+  margin-top: 92px;
+}
+
+/* =========================
+   KEY/VALUE ROWS
+   ========================= */
+.row.mb-2 {
+  padding: 10px 14px;
+  margin-left: 0;
+  margin-right: 0;
+  border-radius: 12px;
+  border: 1px solid rgba(33, 37, 41, 0.08);
+  background: rgba(248, 249, 250, 0.72);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.row.mb-2:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.06);
+}
+
+.col-sm-4.fw-bold {
+  color: #343a40;
+  font-weight: 900 !important;
+}
+
+.col-sm-8 {
+  color: #212529;
+}
+
+.row.mb-4 {
+  padding: 10px 14px;
+  margin-left: 0;
+  margin-right: 0;
+  border-radius: 12px;
+  border: 1px solid rgba(33, 37, 41, 0.08);
+  background: rgba(248, 249, 250, 0.72);
+}
+
+/* link do site */
+a[target="_blank"] {
+  color: #0d6efd;
+  font-weight: 800;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(13, 110, 253, 0.45);
+  padding-bottom: 1px;
+}
+
+a[target="_blank"]:hover {
+  color: #0b5ed7;
+  border-bottom-color: rgba(13, 110, 253, 0.85);
+}
+
+/* =========================
+   SECTION TITLES
+   ========================= */
+h5.mt-4,
+div.mt-4>h5 {
+  margin-top: 20px !important;
+  margin-bottom: 10px;
+  font-weight: 900;
+  color: #212529;
+}
+
+/* =========================
+   PROMPT BOX
+   ========================= */
+p.text-muted {
+  margin: 0;
+  color: #495057 !important;
+  background: #f8f9ff;
+  border: 1px solid rgba(13, 110, 253, 0.14);
+  border-radius: 14px;
+  padding: 14px 14px;
+  line-height: 1.45;
+  white-space: pre-line;
+}
+
+/* =========================
+   SUBSCRIPTION
+   ========================= */
+.list-group {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(33, 37, 41, 0.08);
+}
+
+.list-group-item {
+  border: 0;
+  border-bottom: 1px solid rgba(33, 37, 41, 0.08);
+  padding: 12px 14px;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  background: #ffffff;
+}
+
+.list-group-item:last-child {
+  border-bottom: 0;
+}
+
+.list-group-item strong {
+  color: #343a40;
+  min-width: 140px;
+  display: inline-block;
+  font-weight: 900;
+}
+
+/* =========================
+   LOADING / ERROR
+   ========================= */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+.alert.alert-danger.container {
+  border-radius: 14px;
+  width: min(560px, 100%);
+  margin: 16px auto 0;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+@media (max-width: 576px) {
+  .card-body {
+    padding: 18px;
+  }
+
+  .card-body::after {
+    left: 12px;
+    right: 12px;
+    top: 84px;
+    bottom: 12px;
+    border-radius: 14px;
+  }
+
+  h3.mb-4 {
+    font-size: 1.35rem;
+    padding-right: 0;
+  }
+
+  .list-group-item strong {
+    min-width: 110px;
+  }
+}
+
+/* Período + botão Renovar na mesma linha */
+.list-group-item.subscription-period {
+  align-items: center;
+}
+
+/* bloco do texto do período (cresce) */
+.subscription-period-content {
+  flex: 1;
+  color: #212529;
+}
+
+/* botão Renovar */
+.subscription-renew {
+  border-radius: 10px;
+  padding: 6px 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* no mobile quebra bonito (texto em cima, botão em baixo) */
+@media (max-width: 576px) {
+  .list-group-item.subscription-period {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .subscription-renew {
+    width: 100%;
+  }
+}

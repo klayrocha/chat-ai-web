@@ -1,0 +1,114 @@
+<div class="register-page">
+  <div class="card register-card shadow-lg">
+    <div *ngIf="editing" class="d-flex justify-content-between align-items-center mb-3">
+      <button type="button" class="btn btn-outline-secondary" (click)="goBack()">
+        ← Voltar
+      </button>
+
+      <span class="text-muted small">
+        
+      </span>
+    </div>
+    <h3 class="text-center mb-4">
+      {{ editing ? 'Editar conta' : 'Crie a sua conta' }}
+    </h3>
+
+    <form (ngSubmit)="submit()" #f="ngForm">
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Nome Completo</label>
+          <input class="form-control" name="fullName" [(ngModel)]="model.fullName" required />
+        </div>
+
+        <div class="col-md-6 mb-3" *ngIf="!editing">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" name="email" [(ngModel)]="model.email" required />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3" *ngIf="!editing">
+          <label class="form-label">Senha</label>
+          <input type="password" class="form-control" name="passwordHash" [(ngModel)]="model.passwordHash" required />
+        </div>
+
+        <div class="col-md-6 mb-3" [class.col-md-12]="editing">
+          <label class="form-label">Telefone</label>
+          <input class="form-control" name="phoneNumber" [(ngModel)]="model.phoneNumber" />
+        </div>
+
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Nome da Empresa</label>
+        <input class="form-control" name="companyName" [(ngModel)]="model.companyName" />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Endereço do Site (https://www.exemplo.com.br)</label>
+        <input class="form-control" name="companyWebsiteUrl" [(ngModel)]="model.companyWebsiteUrl" />
+      </div>
+
+      <div class="mb-3 prompt-block">
+        <label class="form-label" for="promptText">Informações para melhorar o atendimento</label>
+
+        <div class="prompt-hint" *ngIf="!editing">
+          <div class="prompt-hint-title">O que escrever aqui?</div>
+          <p>
+            Coloque informações que ajudem a responder seus clientes com mais precisão.
+            Pense no que eles perguntam com frequência.
+          </p>
+
+          <div class="prompt-hint-examples">
+            <div class="prompt-hint-examples-title">Exemplos:</div>
+            <ul>
+              <li>Meu telefone de contato é +55 (61) 9999999</li>
+              <li>Meu email para contato é email@email.com</li>
+              <li>Horário: segunda a sábado, 08h às 20h (exceto feriados)</li>
+              <li>Vendemos roupas femininas e masculinas</li>
+              <li>Fechamos às 20h</li>
+            </ul>
+          </div>
+        </div>
+
+        <textarea id="promptText" class="form-control" rows="4" name="promptText"
+          [(ngModel)]="model.promptText"></textarea>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Idioma</label>
+          <select class="form-select" name="languageCode" [(ngModel)]="model.languageCode">
+            <option value="pt-BR">Português (Brasil)</option>
+            <option value="pt-PT">Português (Portugal)</option>
+            <option value="en-US">English</option>
+          </select>
+        </div>
+
+        <div class="col-md-6 mb-3" *ngIf="!editing">
+          <label class="form-label">Ramo</label>
+          <select class="form-select" name="vertical" [(ngModel)]="model.vertical">
+            <option value="ecommerce">E-commerce</option>
+            <option value="clinic">Clínica</option>
+            <option value="salon">Salão</option>
+            <option value="general">Outros</option>
+          </select>
+        </div>
+      </div>
+
+      <div *ngIf="error" class="alert alert-danger mt-3">
+        {{ error }}
+      </div>
+
+      <div *ngIf="success" class="alert alert-success mt-3">
+        Account created successfully 🎉
+      </div>
+
+      <button class="btn btn-primary w-100 mt-3" [disabled]="loading || !f.valid">
+        {{ loading ? (editing ? 'Salvando...' : 'Criando conta...') : (editing ? 'Salvar alterações' : 'Salvar') }}
+      </button>
+
+    </form>
+  </div>
+</div>

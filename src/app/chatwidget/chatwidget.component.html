@@ -1,0 +1,34 @@
+<div class="wrap">
+  <header class="header">
+    <div class="brand">
+      <div class="logo">AI</div>
+      <div class="title">
+        <strong>Assistente</strong>
+        <span>{{ busy ? 'A pensar…' : 'Online' }}</span>
+      </div>
+    </div>
+    <button class="xbtn" (click)="close()">✕</button>
+  </header>
+
+  <main id="msgs" class="messages">
+    <div
+      *ngFor="let m of messages"
+      class="bubble"
+      [class.me]="m.role === 'user'"
+      [class.bot]="m.role === 'assistant'"
+    >
+      {{ m.text }}
+    </div>
+  </main>
+
+  <footer class="footer">
+    <input
+      class="input"
+      [(ngModel)]="input"
+      [disabled]="busy"
+      (keydown.enter)="send()"
+      placeholder="Escreva a sua mensagem…"
+    />
+    <button class="send" (click)="send()" [disabled]="busy">Enviar</button>
+  </footer>
+</div>
