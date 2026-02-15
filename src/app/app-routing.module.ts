@@ -5,25 +5,37 @@ import { RegisterComponent } from './register/register.component';
 import { ChatWidgetComponent } from './chatwidget/chatwidget.component';
 import { authGuard } from './auth/auth.guard';
 import { DetailComponent } from './detail/detail.component';
+import { DetalhePaymentComponent } from './detalhe-payment/detalhe-payment.component';
+import { PaypalSuccessComponent } from './paypal-success/paypal-success.component';
+import { PaypalCancelComponent } from './paypal-cancel/paypal-cancel.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'chat', pathMatch: 'full' },
-  
-  { 
-    path: 'client/:uuid', 
+
+  {
+    path: 'client/:uuid',
     component: DetailComponent,
-    canActivate: [authGuard] 
+    canActivate: [authGuard]
   },
-  
-  { 
-    path: 'client/:uuid/edit', 
-    component: RegisterComponent, 
+
+  {
+    path: 'client/:uuid/edit',
+    component: RegisterComponent,
+    canActivate: [authGuard]
+  },
+
+  {
+    path: 'client/:uuid/payment',
+    component: DetalhePaymentComponent,
     canActivate: [authGuard] 
   },
 
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'chat', component: ChatWidgetComponent },
+
+  { path: 'paypal/success', component: PaypalSuccessComponent },
+  { path: 'paypal/cancel', component: PaypalCancelComponent },
 
   { path: '**', redirectTo: 'chat' }
 ];

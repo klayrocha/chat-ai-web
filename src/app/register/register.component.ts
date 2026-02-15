@@ -97,7 +97,7 @@ export class RegisterComponent {
       await this.api.registerClient(this.model);
       this.success = true;
       this.model.passwordHash = '';
-
+      this.router.navigate([`/login`]);
     } catch (e: any) {
       this.error = e.message || (this.editing ? 'Update failed' : 'Registration failed');
     } finally {

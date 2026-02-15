@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { RegisterModel } from '../model/register-model';
 import { ClientDetail } from '../model/detail.model';
 import { UpdateClientReq } from '../model/update-client.mode';
+import { parseApiError } from '../shared/api-error';
 
 type ChatReq = { clientId: string; sessionId: string; message: string };
 
@@ -17,7 +18,9 @@ export class ChatapiService {
   constructor(
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
+
+
 
   /** Se receber 401/403, faz logout e redireciona pro login */
   private async handleAuthError(res: Response): Promise<void> {
@@ -39,7 +42,9 @@ export class ChatapiService {
 
     await this.handleAuthError(res);
 
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (!res.ok) {
+      throw await parseApiError(res, 'Falha ao enviar mensagem');
+    }
     const data = await res.json();
     return data.answer ?? data.content ?? String(data);
   }
@@ -57,7 +62,7 @@ export class ChatapiService {
     await this.handleAuthError(res);
 
     if (!res.ok) {
-      throw new Error(`Register failed: HTTP ${res.status}`);
+      throw await parseApiError(res, 'Falha no cadastro');
     }
   }
 
@@ -95,7 +100,7 @@ export class ChatapiService {
     await this.handleAuthError(res);
 
     if (!res.ok) {
-      throw new Error(`Update failed: HTTP ${res.status}`);
+      throw await parseApiError(res, 'Falha ao atualizar');
     }
   }
 }

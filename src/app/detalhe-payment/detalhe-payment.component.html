@@ -1,0 +1,49 @@
+<div class="payment-page">
+    <div class="card payment-card shadow-lg">
+
+        <button class="btn btn-link p-0 mb-3" (click)="back()">
+            ← Voltar
+        </button>
+
+        <h3 class="text-center mb-4">Renovar Inscrição</h3>
+
+        <form (ngSubmit)="submit()">
+
+            <div class="mb-3">
+                <label class="form-label">Escolha o plano</label>
+                <select class="form-select" [(ngModel)]="selectedPlan" name="plan" required>
+                    <option value="3000" selected>Plano Essential — 3000 mensagens mensal</option>
+                    <option value="10000">Plano Premium — 10.000 mensagens mensal</option>
+                </select>
+            </div>
+
+            <div class="alert alert-info mt-3">
+                <strong>Informações de cobrança</strong>
+                <ul class="mb-0 mt-2">
+                    <li>
+                        <strong>Plano Essential (3000 mensagens mensal):</strong>
+                        R$ 2.400,00 cobrados no cartão
+                        <span class="text-muted">(custo médio mensal de R$ 200,00)</span>
+                    </li>
+                    <li>
+                        <strong>Plano Premium (10.000 mensagens mensal):</strong>
+                        R$ 3.600,00 cobrados no cartão
+                        <span class="text-muted">(custo médio mensal de R$ 300,00)</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div *ngIf="error" class="alert alert-danger mt-3">
+                {{ error }}
+            </div>
+            <button *ngIf="!showPayPal" type="button" class="btn btn-primary w-100 mt-4" (click)="openRenew()">
+                Continuar com o pagamento
+            </button>
+
+            <div *ngIf="showPayPal" class="mt-3">
+                <app-paypal-button [plan]="selectedPlan"></app-paypal-button>
+            </div>
+
+        </form>
+    </div>
+</div>

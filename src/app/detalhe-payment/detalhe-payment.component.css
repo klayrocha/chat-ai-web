@@ -1,0 +1,69 @@
+.payment-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e90ff 0%, #6a11cb 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.payment-card {
+  width: min(580px, 100%);
+  border-radius: 16px;
+  padding: 32px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(0,0,0,.18);
+}
+
+.payment-card h3 {
+  font-weight: 700;
+}
+
+.payment-card .form-label {
+  font-weight: 600;
+  color: #495057;
+}
+
+.payment-card .form-select {
+  border-radius: 10px;
+  min-height: 46px;
+}
+
+.payment-card .btn {
+  height: 48px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+@media (max-width: 576px) {
+  .payment-page {
+    padding: 14px;
+  }
+
+  .payment-card {
+    padding: 20px;
+    border-radius: 14px;
+  }
+}
+
+.plan-details {
+  background: #f8f9ff;
+  border: 1px solid rgba(13, 110, 253, 0.18);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.plan-details h6 {
+  font-weight: 700;
+  color: #0d6efd;
+}
+
+.plan-details ul {
+  padding-left: 18px;
+  margin: 0;
+}
+
+.plan-details li {
+  margin: 6px 0;
+  color: #343a40;
+}

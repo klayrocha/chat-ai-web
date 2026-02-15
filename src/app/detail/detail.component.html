@@ -1,3 +1,6 @@
+<div *ngIf="successMessage" class="alert alert-success">
+  {{ successMessage }}
+</div>
 <div class="container-fluid detail-page" *ngIf="!loading && client">
     <div class="card shadow-sm">
         <div class="card-body">
@@ -85,9 +88,10 @@
                             {{ client.subscription.endDate | date:'dd/MM/yyyy' }}
                         </div>
 
-                        <button type="button" class="btn btn-primary btn-sm subscription-renew">
+                        <button type="button" class="btn btn-primary btn-sm subscription-renew" (click)="goToPayment()">
                             Renovar
                         </button>
+
                     </li>
 
                 </ul>
@@ -100,7 +104,6 @@
 <div *ngIf="loading" class="text-center py-5">
     <div class="spinner-border"></div>
 </div>
-
 <div *ngIf="error" class="alert alert-danger container mt-4">
     {{ error }}
 </div>

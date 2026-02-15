@@ -1,0 +1,28 @@
+<div class="cancel-page">
+  <div class="cancel-card">
+
+    <div class="cancel-topbar">
+      <span class="cancel-pill">Pagamento</span>
+    </div>
+
+    <h3 class="cancel-title">Pagamento cancelado</h3>
+
+    <div class="cancel-alert">
+      <div class="cancel-icon">!</div>
+
+      <div class="cancel-alert-body">
+        <strong class="cancel-alert-heading">{{ title }}</strong>
+        <div class="cancel-alert-text">{{ message }}</div>
+
+        <div class="cancel-hint">
+          Você pode tentar novamente quando quiser — basta escolher o plano e clicar em “Continuar com o pagamento”.
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="btn-primary" (click)="backToDetail()">
+      Voltar para o detalhe
+    </button>
+
+  </div>
+</div>

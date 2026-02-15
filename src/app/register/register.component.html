@@ -6,7 +6,7 @@
       </button>
 
       <span class="text-muted small">
-        
+
       </span>
     </div>
     <h3 class="text-center mb-4">
@@ -35,19 +35,19 @@
 
         <div class="col-md-6 mb-3" [class.col-md-12]="editing">
           <label class="form-label">Telefone</label>
-          <input class="form-control" name="phoneNumber" [(ngModel)]="model.phoneNumber" />
+          <input class="form-control" name="phoneNumber" [(ngModel)]="model.phoneNumber" required/>
         </div>
 
       </div>
 
       <div class="mb-3">
         <label class="form-label">Nome da Empresa</label>
-        <input class="form-control" name="companyName" [(ngModel)]="model.companyName" />
+        <input class="form-control" name="companyName" [(ngModel)]="model.companyName" required/>
       </div>
 
       <div class="mb-3">
         <label class="form-label">Endereço do Site (https://www.exemplo.com.br)</label>
-        <input class="form-control" name="companyWebsiteUrl" [(ngModel)]="model.companyWebsiteUrl" />
+        <input class="form-control" name="companyWebsiteUrl" [(ngModel)]="model.companyWebsiteUrl" required/>
       </div>
 
       <div class="mb-3 prompt-block">
@@ -73,13 +73,13 @@
         </div>
 
         <textarea id="promptText" class="form-control" rows="4" name="promptText"
-          [(ngModel)]="model.promptText"></textarea>
+          [(ngModel)]="model.promptText" required></textarea>
       </div>
 
       <div class="row">
         <div class="col-md-6 mb-3">
           <label class="form-label">Idioma</label>
-          <select class="form-select" name="languageCode" [(ngModel)]="model.languageCode">
+          <select class="form-select" name="languageCode" [(ngModel)]="model.languageCode" required>
             <option value="pt-BR">Português (Brasil)</option>
             <option value="pt-PT">Português (Portugal)</option>
             <option value="en-US">English</option>
@@ -88,7 +88,7 @@
 
         <div class="col-md-6 mb-3" *ngIf="!editing">
           <label class="form-label">Ramo</label>
-          <select class="form-select" name="vertical" [(ngModel)]="model.vertical">
+          <select class="form-select" name="vertical" [(ngModel)]="model.vertical" required>
             <option value="ecommerce">E-commerce</option>
             <option value="clinic">Clínica</option>
             <option value="salon">Salão</option>
@@ -97,12 +97,13 @@
         </div>
       </div>
 
-      <div *ngIf="error" class="alert alert-danger mt-3">
+      <div *ngIf="error" class="alert alert-danger mt-3" style="white-space: pre-line;">
         {{ error }}
       </div>
 
+
       <div *ngIf="success" class="alert alert-success mt-3">
-        Account created successfully 🎉
+        Conta criada com sucesso 🎉
       </div>
 
       <button class="btn btn-primary w-100 mt-3" [disabled]="loading || !f.valid">

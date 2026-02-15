@@ -14,12 +14,13 @@ export class DetailComponent implements OnInit {
   client?: ClientDetail;
   loading = true;
   error?: string;
+  successMessage?: string;
 
   constructor(
     private api: ChatapiService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService 
+    private authService: AuthService
   ) { }
 
   async ngOnInit() {
@@ -30,6 +31,28 @@ export class DetailComponent implements OnInit {
         return;
       }
 
+      // ✅ Se veio do pagamento com sucesso
+      const payment = this.route.snapshot.queryParamMap.get('payment');
+      if (payment === 'success') {
+        this.successMessage = 'Pagamento confirmado ✅ Sua inscrição foi renovada.';
+        // some sozinho após 5s (opcional)
+        setTimeout(() => (this.successMessage = undefined), 5000);
+      }
+
+      this.client = await this.api.getClientDetail(uuid);
+
+    } catch (e: any) {
+      this.error = e.message ?? 'Failed to load client';
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  private async load(uuid: string) {
+    this.loading = true;
+    this.error = undefined;
+
+    try {
       this.client = await this.api.getClientDetail(uuid);
     } catch (e: any) {
       this.error = e.message ?? 'Failed to load client';
@@ -37,6 +60,7 @@ export class DetailComponent implements OnInit {
       this.loading = false;
     }
   }
+
 
   logout() {
     this.authService.logout();
@@ -47,6 +71,12 @@ export class DetailComponent implements OnInit {
     if (!this.client?.uuid) return;
     this.router.navigate([`/client/${this.client.uuid}/edit`]);
   }
+
+  goToPayment() {
+    if (!this.client?.uuid) return;
+    this.router.navigate([`/client/${this.client.uuid}/payment`]);
+  }
+
 
   languageLabel(code?: string): string {
     switch (code) {

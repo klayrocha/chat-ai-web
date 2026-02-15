@@ -8,6 +8,10 @@ import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { DetailComponent } from './detail/detail.component';
+import { DetalhePaymentComponent } from './detalhe-payment/detalhe-payment.component';
+import { PaypalButtonComponent } from './paypalbutton/paypal-button.component';
+import { PaypalCancelComponent } from './paypal-cancel/paypal-cancel.component';
+import { PaypalSuccessComponent } from './paypal-success/paypal-success.component';
 
 
 @NgModule({
@@ -16,7 +20,11 @@ import { DetailComponent } from './detail/detail.component';
     ChatWidgetComponent,
     LoginComponent,
     RegisterComponent,
-    DetailComponent
+    DetailComponent,
+    PaypalButtonComponent,
+    DetalhePaymentComponent,
+    PaypalCancelComponent,
+    PaypalSuccessComponent
   ],
   imports: [
     BrowserModule,
