@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChatapiService } from '../service/chatapi.service';
-
+import { APP_CONFIG, AppConfig } from '../shared/app-config';
+import { Inject } from '@angular/core';
 type Msg = { role: 'user' | 'assistant'; text: string };
 
 @Component({
@@ -19,7 +20,10 @@ export class ChatWidgetComponent implements OnInit {
 
   messages: Msg[] = [];
 
-  constructor(private route: ActivatedRoute, private api: ChatapiService) {}
+  constructor(
+    @Inject(APP_CONFIG) private config: AppConfig,
+    private route: ActivatedRoute, private api: ChatapiService
+  ) { }
 
 
   ngOnInit(): void {
@@ -27,17 +31,14 @@ export class ChatWidgetComponent implements OnInit {
 
     this.clientId = params.get('clientId') ?? 'default';
 
-    this.locale = params.get('locale') ?? 'pt-PT';
+    this.locale = params.get('locale') ?? 'pt-BR';
 
-    this.apiBase = params.get('apiBase') ?? 'http://localhost:8080';
-    this.api.apiBase = this.apiBase;
+    this.apiBase = params.get('apiBase') ?? this.config.apiBase;
 
     this.sessionId = params.get('sessionId') ?? this.getOrCreateSessionId(this.clientId);
 
     this.messages.push({ role: 'assistant', text: 'Olá! Como posso ajudar?' });
   }
-
-
 
   async send(): Promise<void> {
     const text = this.input.trim();
@@ -48,11 +49,15 @@ export class ChatWidgetComponent implements OnInit {
     this.busy = true;
 
     try {
-      const answer = await this.api.sendMessage({
-        clientId: this.clientId,
-        sessionId: this.sessionId,
-        message: text,
-      });
+      const answer = await this.api.sendMessage(
+        {
+          clientId: this.clientId,
+          sessionId: this.sessionId,
+          message: text,
+        },
+        this.apiBase
+      );
+
       this.messages.push({ role: 'assistant', text: answer });
     } catch (e) {
       console.log('Erro --> ', e);
@@ -62,6 +67,7 @@ export class ChatWidgetComponent implements OnInit {
       setTimeout(() => this.scrollToBottom(), 0);
     }
   }
+
 
   close(): void {
     window.parent?.postMessage({ type: 'CW_CLOSE' }, '*');

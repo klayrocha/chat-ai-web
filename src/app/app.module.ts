@@ -12,6 +12,7 @@ import { DetalhePaymentComponent } from './detalhe-payment/detalhe-payment.compo
 import { PaypalButtonComponent } from './paypalbutton/paypal-button.component';
 import { PaypalCancelComponent } from './paypal-cancel/paypal-cancel.component';
 import { PaypalSuccessComponent } from './paypal-success/paypal-success.component';
+import { APP_CONFIG, appConfig } from './shared/app-config';
 
 
 @NgModule({
@@ -31,7 +32,9 @@ import { PaypalSuccessComponent } from './paypal-success/paypal-success.componen
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+    { provide: APP_CONFIG, useValue: appConfig },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

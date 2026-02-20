@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
+import { APP_CONFIG, AppConfig } from '../shared/app-config';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { RegisterModel } from '../model/register-model';
@@ -13,9 +14,9 @@ type ChatReq = { clientId: string; sessionId: string; message: string };
 })
 export class ChatapiService {
 
-  apiBase = 'http://localhost:8080';
 
   constructor(
+    @Inject(APP_CONFIG) private config: AppConfig,
     private authService: AuthService,
     private router: Router
   ) { }
@@ -30,27 +31,24 @@ export class ChatapiService {
     }
   }
 
-  async sendMessage(req: ChatReq): Promise<string> {
-    const res = await fetch(`${this.apiBase}/api/v1/chat-ai`, {
+  async sendMessage(req: ChatReq, apiBaseOverride?: string): Promise<string> {
+    const base = (apiBaseOverride || this.config.apiBase).replace(/\/+$/, '');
+
+    const res = await fetch(`${base}/api/v1/chat-ai`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(req),
     });
 
     await this.handleAuthError(res);
 
-    if (!res.ok) {
-      throw await parseApiError(res, 'Falha ao enviar mensagem');
-    }
+    if (!res.ok) throw await parseApiError(res, `Falha ao enviar mensagem`);
     const data = await res.json();
     return data.answer ?? data.content ?? String(data);
   }
 
   async registerClient(req: RegisterModel): Promise<void> {
-    const res = await fetch(`${this.apiBase}/api/v1/clients`, {
+    const res = await fetch(`${this.config.apiBase}/api/v1/clients`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -68,7 +66,7 @@ export class ChatapiService {
 
   async getClientDetail(clientUUID: string): Promise<ClientDetail> {
     const token = this.authService.getToken();
-    const res = await fetch(`${this.apiBase}/api/v1/clients/${clientUUID}`, {
+    const res = await fetch(`${this.config.apiBase}/api/v1/clients/${clientUUID}`, {
       headers: {
         'Accept': 'application/json',
         ...(token ? { 'Authorization': token } : {})
@@ -87,7 +85,7 @@ export class ChatapiService {
   async updateClient(req: UpdateClientReq): Promise<void> {
     const token = this.authService.getToken();
 
-    const res = await fetch(`${this.apiBase}/api/v1/clients`, {
+    const res = await fetch(`${this.config.apiBase}/api/v1/clients`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

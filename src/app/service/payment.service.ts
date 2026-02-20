@@ -1,13 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
+import { APP_CONFIG, AppConfig } from '../shared/app-config';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { parseApiError } from '../shared/api-error';
 
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
-  apiBase = 'http://localhost:8080';
-
-  constructor(private auth: AuthService, private router: Router) { }
+  
+  constructor(
+    @Inject(APP_CONFIG) private config: AppConfig,
+    private auth: AuthService, private router: Router
+  ) { }
 
   private async handleAuthError(res: Response): Promise<void> {
     if (res.status === 401 || res.status === 403) {
@@ -19,7 +22,7 @@ export class PaymentService {
   async createPayPalOrder(plan: string): Promise<string> {
     const token = this.auth.getToken();
     const clientUuid = this.auth.getClientUuid();
-    const res = await fetch(`${this.apiBase}/api/v1/paypal/order`, {
+    const res = await fetch(`${this.config.apiBase}/api/v1/paypal/order`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -38,7 +41,7 @@ export class PaymentService {
   async capturePayPalOrder(orderId: string): Promise<{ ok: boolean;[k: string]: any }> {
     const token = this.auth.getToken();
     const clientUuid = this.auth.getClientUuid();
-    const res = await fetch(`${this.apiBase}/api/v1/paypal/capture/${orderId}/${clientUuid}`, {
+    const res = await fetch(`${this.config.apiBase}/api/v1/paypal/capture/${orderId}/${clientUuid}`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

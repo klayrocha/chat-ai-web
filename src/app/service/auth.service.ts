@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
+import { APP_CONFIG, AppConfig } from '../shared/app-config';
 
 export type LoginRequest = {
   email: string;
@@ -10,12 +11,13 @@ export type LoginRequest = {
 })
 export class AuthService {
 
-  apiBase = 'http://localhost:8080';
+  constructor(@Inject(APP_CONFIG) private config: AppConfig) {}
+
   private tokenKey = 'auth_token';
   private clientUuid = 'client_uuid';
 
   async login(req: LoginRequest): Promise<void> {
-    const res = await fetch(`${this.apiBase}/api/v1/auth`, {
+    const res = await fetch(`${this.config.apiBase}/api/v1/auth`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
