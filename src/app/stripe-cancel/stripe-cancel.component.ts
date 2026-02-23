@@ -3,11 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../service/auth.service';
 
 @Component({
-  selector: 'app-paypal-cancel',
-  templateUrl: './paypal-cancel.component.html',
-  styleUrls: ['./paypal-cancel.component.css']
+  selector: 'app-stripe-cancel',
+  templateUrl: './stripe-cancel.component.html',
+  styleUrls: ['./stripe-cancel.component.css']
 })
-export class PaypalCancelComponent implements OnInit {
+export class StripeCancelComponent implements OnInit {
   title = 'Pagamento cancelado';
   message = 'Você cancelou o pagamento.';
 

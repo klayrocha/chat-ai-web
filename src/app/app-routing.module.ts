@@ -6,8 +6,8 @@ import { ChatWidgetComponent } from './chatwidget/chatwidget.component';
 import { authGuard } from './auth/auth.guard';
 import { DetailComponent } from './detail/detail.component';
 import { DetalhePaymentComponent } from './detalhe-payment/detalhe-payment.component';
-import { PaypalSuccessComponent } from './paypal-success/paypal-success.component';
-import { PaypalCancelComponent } from './paypal-cancel/paypal-cancel.component';
+import { StripeSuccessComponent } from './stripe-success/stripe-success.component';
+import { StripeCancelComponent } from './stripe-cancel/stripe-cancel.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'chat', pathMatch: 'full' },
@@ -34,8 +34,16 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'chat', component: ChatWidgetComponent },
 
-  { path: 'paypal/success', component: PaypalSuccessComponent },
-  { path: 'paypal/cancel', component: PaypalCancelComponent },
+  { 
+    path: 'stripe/success', 
+    component: StripeSuccessComponent,
+    canActivate: [authGuard] 
+  },
+  { 
+    path: 'stripe/cancel', 
+    component: StripeCancelComponent,
+    canActivate: [authGuard] 
+  },
 
   { path: '**', redirectTo: 'chat' }
 ];

@@ -9,11 +9,10 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { DetailComponent } from './detail/detail.component';
 import { DetalhePaymentComponent } from './detalhe-payment/detalhe-payment.component';
-import { PaypalButtonComponent } from './paypalbutton/paypal-button.component';
-import { PaypalCancelComponent } from './paypal-cancel/paypal-cancel.component';
-import { PaypalSuccessComponent } from './paypal-success/paypal-success.component';
+import { StripeSuccessComponent } from './stripe-success/stripe-success.component';
 import { APP_CONFIG, appConfig } from './shared/app-config';
-
+import { StripeCancelComponent } from './stripe-cancel/stripe-cancel.component';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 @NgModule({
   declarations: [
@@ -22,18 +21,19 @@ import { APP_CONFIG, appConfig } from './shared/app-config';
     LoginComponent,
     RegisterComponent,
     DetailComponent,
-    PaypalButtonComponent,
     DetalhePaymentComponent,
-    PaypalCancelComponent,
-    PaypalSuccessComponent
+    StripeCancelComponent,
+    StripeSuccessComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    NgxMaskDirective
   ],
   providers: [
     { provide: APP_CONFIG, useValue: appConfig },
+    provideNgxMask()
   ],
   bootstrap: [AppComponent]
 })

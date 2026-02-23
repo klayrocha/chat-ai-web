@@ -34,8 +34,13 @@
         </div>
 
         <div class="col-md-6 mb-3" [class.col-md-12]="editing">
-          <label class="form-label">Telefone</label>
-          <input class="form-control" name="phoneNumber" [(ngModel)]="model.phoneNumber" required/>
+          <label class="form-label">Informe um número válido com DDD e WhatsApp ativo (Caso o seu cliente queira falar pelo WhatsApp, conversa normal)</label>
+          <input 
+            class="form-control" 
+            name="phoneNumber" 
+            [(ngModel)]="model.phoneNumber" 
+            mask="+00 00 00000-0000"
+            placeholder="+55 11 91234-5678" required/>
         </div>
 
       </div>

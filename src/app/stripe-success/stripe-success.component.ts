@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 import { AuthService } from '../service/auth.service';
 
 @Component({
-  selector: 'app-paypal-success',
-  templateUrl: './paypal-success.component.html'
+  selector: 'app-stripe-success',
+  templateUrl: './stripe-success.component.html'
 })
-export class PaypalSuccessComponent {
+export class StripeSuccessComponent {
 
   constructor(private auth: AuthService, private router: Router) {}
 
