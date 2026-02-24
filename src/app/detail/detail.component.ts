@@ -87,6 +87,14 @@ export class DetailComponent implements OnInit {
     }
   }
 
+  whatsAppButton(code?: string): string {
+    switch (code) {
+      case 'yes': return 'Sim';
+      case 'no': return 'Não';
+      default: return code ?? '';
+    }
+  }
+
   getSubscriptionType(subscriptionType: string | undefined): string {
     switch (subscriptionType) {
       case 'FREE':

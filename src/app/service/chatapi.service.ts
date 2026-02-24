@@ -82,6 +82,14 @@ export class ChatapiService {
     return res.json();
   }
 
+
+  async getWidgetConfig(clientId: string): Promise<any> {
+    const r = await fetch(`${this.config.apiBase}/api/v1/widget-config?clientUuid=${encodeURIComponent(clientId)}`, {
+      method: 'GET'
+    });
+    return await r.json();
+  }
+
   async updateClient(req: UpdateClientReq): Promise<void> {
     const token = this.authService.getToken();
 

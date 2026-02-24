@@ -11,6 +11,7 @@ export class RegisterModel {
   companyWebsiteUrl!: string;
   languageCode: string = 'pt-BR';
   vertical: Vertical = 'ecommerce';
+  humanWhatsapp!: string;
 
   constructor(init?: Partial<RegisterModel>) {
     Object.assign(this, init);

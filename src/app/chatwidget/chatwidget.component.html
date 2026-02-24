@@ -4,31 +4,56 @@
       <div class="logo">AI</div>
       <div class="title">
         <strong>Assistente</strong>
-        <span>{{ busy ? 'A pensar…' : 'Online' }}</span>
+        <span class="status">
+          <ng-container *ngIf="busy; else onlineTpl">
+            <span class="spinner" aria-hidden="true"></span>
+            <span class="status-text">Digitando…</span>
+          </ng-container>
+
+          <ng-template #onlineTpl>
+            <span class="dot" aria-hidden="true"></span>
+            <span class="status-text">Online</span>
+          </ng-template>
+        </span>
       </div>
     </div>
-    <button class="xbtn" (click)="close()">✕</button>
+
+    <div class="header-actions" *ngIf="whatsAppLink && humanWhatsapp === 'yes'">
+      <!-- Botão WhatsApp compacto -->
+      <button class="wabtn" type="button" (click)="openWhatsApp()" aria-label="Abrir WhatsApp">
+        <span class="wa-ic" aria-hidden="true">💬</span>
+        <span class="wa-label">WhatsApp</span>
+      </button>
+
+      <!-- Texto premium (sempre visível em desktop) -->
+      <span class="wa-note" title="Atendimento humano (se disponível)">
+        Atendimento humano (se disponível)
+      </span>
+
+      <!-- Tooltip icon (melhor para mobile) -->
+      <span class="wa-info" aria-label="Informação" tabindex="0">
+        i
+        <span class="wa-tip">Atendimento humano (se disponível)</span>
+      </span>
+    </div>
+
+    <button class="xbtn" (click)="close()" type="button" aria-label="Fechar">✕</button>
   </header>
 
   <main id="msgs" class="messages">
-    <div
-      *ngFor="let m of messages"
-      class="bubble"
-      [class.me]="m.role === 'user'"
-      [class.bot]="m.role === 'assistant'"
-    >
+    <div *ngFor="let m of messages" class="bubble" [class.me]="m.role === 'user'" [class.bot]="m.role === 'assistant'">
       {{ m.text }}
+    </div>
+    <div *ngIf="busy" class="bubble bot typing-bubble" aria-label="Assistente digitando">
+      <span class="typing" aria-hidden="true">
+        <i></i><i></i><i></i>
+      </span>
     </div>
   </main>
 
   <footer class="footer">
-    <input
-      class="input"
-      [(ngModel)]="input"
-      [disabled]="busy"
-      (keydown.enter)="send()"
-      placeholder="Escreva a sua mensagem…"
-    />
-    <button class="send" (click)="send()" [disabled]="busy">Enviar</button>
+    <input class="input" [(ngModel)]="input" [disabled]="busy" (keydown.enter)="send()"
+      placeholder="Escreva a sua mensagem…" />
+    <button class="send" (click)="send()" [disabled]="busy" type="button">Enviar</button>
   </footer>
 </div>

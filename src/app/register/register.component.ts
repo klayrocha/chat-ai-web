@@ -27,7 +27,8 @@ export class RegisterComponent {
     promptText: '',
     companyWebsiteUrl: '',
     languageCode: 'pt-BR',
-    vertical: 'ecommerce'
+    vertical: 'ecommerce',
+    humanWhatsapp: 'yes',
   };
 
   constructor(
@@ -62,6 +63,7 @@ export class RegisterComponent {
       this.model.promptText = client.promptText ?? '';
       this.model.languageCode = client.languageCode ?? 'pt-BR';
       this.model.vertical = (client as any).vertical ?? this.model.vertical;
+      this.model.humanWhatsapp = (client as any).humanWhatsapp ?? this.model.humanWhatsapp;
 
     } catch (e: any) {
       this.error = e.message || 'Failed to load client';
@@ -84,7 +86,8 @@ export class RegisterComponent {
           companyName: this.model.companyName,
           companyWebsiteUrl: this.model.companyWebsiteUrl,
           promptText: this.model.promptText,
-          languageCode: this.model.languageCode
+          languageCode: this.model.languageCode,
+          humanWhatsapp: this.model.humanWhatsapp
         });
 
         this.success = true;
@@ -97,7 +100,9 @@ export class RegisterComponent {
       await this.api.registerClient(this.model);
       this.success = true;
       this.model.passwordHash = '';
-      this.router.navigate([`/login`]);
+      this.router.navigate(['/login'], {
+        queryParams: { registered: '1' }
+      });
     } catch (e: any) {
       this.error = e.message || (this.editing ? 'Update failed' : 'Registration failed');
     } finally {

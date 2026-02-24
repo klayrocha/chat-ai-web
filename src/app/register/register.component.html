@@ -1,3 +1,4 @@
+<!-- register.component.html (corrigido + select humanWhatsapp) -->
 <div class="register-page">
   <div class="card register-card shadow-lg">
     <div *ngIf="editing" class="d-flex justify-content-between align-items-center mb-3">
@@ -5,16 +6,14 @@
         ← Voltar
       </button>
 
-      <span class="text-muted small">
-
-      </span>
+      <span class="text-muted small"></span>
     </div>
+
     <h3 class="text-center mb-4">
       {{ editing ? 'Editar conta' : 'Crie a sua conta' }}
     </h3>
 
     <form (ngSubmit)="submit()" #f="ngForm">
-
       <div class="row">
         <div class="col-md-6 mb-3">
           <label class="form-label">Nome Completo</label>
@@ -34,25 +33,45 @@
         </div>
 
         <div class="col-md-6 mb-3" [class.col-md-12]="editing">
-          <label class="form-label">Informe um número válido com DDD e WhatsApp ativo (Caso o seu cliente queira falar pelo WhatsApp, conversa normal)</label>
-          <input 
-            class="form-control" 
-            name="phoneNumber" 
-            [(ngModel)]="model.phoneNumber" 
-            mask="+00 00 00000-0000"
-            placeholder="+55 11 91234-5678" required/>
-        </div>
+          <label class="form-label">
+            Informe um número válido com DDD e WhatsApp ativo
+            <span class="text-muted">(para atendimento humano no WhatsApp, se ativado abaixo)</span>
+          </label>
 
+          <input
+            class="form-control"
+            name="phoneNumber"
+            [(ngModel)]="model.phoneNumber"
+            mask="+00 00 00000-0000"
+            placeholder="+55 11 91234-5678"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- ✅ NOVO: Select humanWhatsapp -->
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Ativar botão de WhatsApp (atendimento humano)?</label>
+          <select class="form-select" name="humanWhatsapp" [(ngModel)]="model.humanWhatsapp" required>
+            <option value="yes">Sim (mostrar botão no widget)</option>
+            <option value="no">Não (não mostrar botão)</option>
+          </select>
+
+          <small class="text-muted d-block mt-1">
+            Se ativado, o widget exibirá um botão “WhatsApp” para conversa normal com humano (se disponível).
+          </small>
+        </div>
       </div>
 
       <div class="mb-3">
         <label class="form-label">Nome da Empresa</label>
-        <input class="form-control" name="companyName" [(ngModel)]="model.companyName" required/>
+        <input class="form-control" name="companyName" [(ngModel)]="model.companyName" required />
       </div>
 
       <div class="mb-3">
         <label class="form-label">Endereço do Site (https://www.exemplo.com.br)</label>
-        <input class="form-control" name="companyWebsiteUrl" [(ngModel)]="model.companyWebsiteUrl" required/>
+        <input class="form-control" name="companyWebsiteUrl" [(ngModel)]="model.companyWebsiteUrl" required />
       </div>
 
       <div class="mb-3 prompt-block">
@@ -77,8 +96,14 @@
           </div>
         </div>
 
-        <textarea id="promptText" class="form-control" rows="4" name="promptText"
-          [(ngModel)]="model.promptText" required></textarea>
+        <textarea
+          id="promptText"
+          class="form-control"
+          rows="4"
+          name="promptText"
+          [(ngModel)]="model.promptText"
+          required
+        ></textarea>
       </div>
 
       <div class="row">
@@ -106,7 +131,6 @@
         {{ error }}
       </div>
 
-
       <div *ngIf="success" class="alert alert-success mt-3">
         Conta criada com sucesso 🎉
       </div>
@@ -114,7 +138,6 @@
       <button class="btn btn-primary w-100 mt-3" [disabled]="loading || !f.valid">
         {{ loading ? (editing ? 'Salvando...' : 'Criando conta...') : (editing ? 'Salvar alterações' : 'Salvar') }}
       </button>
-
     </form>
   </div>
 </div>

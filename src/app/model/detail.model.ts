@@ -16,4 +16,5 @@ export interface ClientDetail {
   companyWebsiteUrl: string;
   languageCode: string;
   subscription?: Subscription;
+  humanWhatsapp?: string;
 }
