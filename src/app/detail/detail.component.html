@@ -1,5 +1,5 @@
 <div *ngIf="successMessage" class="alert alert-success">
-  {{ successMessage }}
+    {{ successMessage }}
 </div>
 <div class="container-fluid detail-page" *ngIf="!loading && client">
     <div class="card shadow-sm">
@@ -53,8 +53,13 @@
             </div>
 
             <div class="row mb-4">
+                <div class="col-sm-4 fw-bold">Tipo WhatsApp</div>
+                <div class="col-sm-8">{{ whatsTypeAppButton(client.whatsappType) }}</div>
+            </div>
+
+            <div class="row mb-4">
                 <div class="col-sm-4 fw-bold">Botão WhatsApp</div>
-                <div class="col-sm-8">{{ whatsAppButton(client.humanWhatsapp) }}</div>
+                <div class="col-sm-8">{{ whatsAppButton(client.showWhatsapp) }}</div>
             </div>
 
             <h5 class="mt-4">Informações para melhorar o atendimento</h5>

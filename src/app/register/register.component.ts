@@ -28,7 +28,8 @@ export class RegisterComponent {
     companyWebsiteUrl: '',
     languageCode: 'pt-BR',
     vertical: 'ecommerce',
-    humanWhatsapp: 'yes',
+    showWhatsapp: 'yes',
+    whatsappType: 'human',
   };
 
   constructor(
@@ -63,7 +64,8 @@ export class RegisterComponent {
       this.model.promptText = client.promptText ?? '';
       this.model.languageCode = client.languageCode ?? 'pt-BR';
       this.model.vertical = (client as any).vertical ?? this.model.vertical;
-      this.model.humanWhatsapp = (client as any).humanWhatsapp ?? this.model.humanWhatsapp;
+      this.model.showWhatsapp = (client as any).showWhatsapp ?? this.model.showWhatsapp;
+      this.model.whatsappType = (client as any).whatsappType ?? this.model.whatsappType;
 
     } catch (e: any) {
       this.error = e.message || 'Failed to load client';
@@ -87,7 +89,8 @@ export class RegisterComponent {
           companyWebsiteUrl: this.model.companyWebsiteUrl,
           promptText: this.model.promptText,
           languageCode: this.model.languageCode,
-          humanWhatsapp: this.model.humanWhatsapp
+          showWhatsapp: this.model.showWhatsapp,
+          whatsappType: this.model.whatsappType
         });
 
         this.success = true;

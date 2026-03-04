@@ -6,5 +6,6 @@ export interface UpdateClientReq {
     companyWebsiteUrl?: string;
     promptText?: string;
     languageCode?: string;
-    humanWhatsapp?: string;
+    showWhatsapp?: string;
+    whatsappType?: string;
 };

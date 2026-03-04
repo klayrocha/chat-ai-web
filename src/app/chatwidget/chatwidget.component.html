@@ -18,22 +18,21 @@
       </div>
     </div>
 
-    <div class="header-actions" *ngIf="whatsAppLink && humanWhatsapp === 'yes'">
+    <div class="header-actions" *ngIf="whatsAppLink && showWhatsapp === 'yes'">
       <!-- Botão WhatsApp compacto -->
       <button class="wabtn" type="button" (click)="openWhatsApp()" aria-label="Abrir WhatsApp">
-        <span class="wa-ic" aria-hidden="true">💬</span>
+        <span class="wa-ic" aria-hidden="true" *ngIf="whatsappType === 'human'">👤</span>
+        <span class="wa-ic" aria-hidden="true" *ngIf="whatsappType === 'bot'">🤖</span>
         <span class="wa-label">WhatsApp</span>
       </button>
-
-      <!-- Texto premium (sempre visível em desktop) -->
-      <span class="wa-note" title="Atendimento humano (se disponível)">
-        Atendimento humano (se disponível)
-      </span>
-
       <!-- Tooltip icon (melhor para mobile) -->
       <span class="wa-info" aria-label="Informação" tabindex="0">
         i
-        <span class="wa-tip">Atendimento humano (se disponível)</span>
+        <span class="wa-tip">
+          {{ whatsappType === 'human'
+          ? 'Atendimento humano (se disponível)'
+          : 'Atendimento inteligente' }}
+        </span>
       </span>
     </div>
 

@@ -95,6 +95,14 @@ export class DetailComponent implements OnInit {
     }
   }
 
+  whatsTypeAppButton(code?: string): string {
+    switch (code) {
+      case 'bot': return 'WhatsApp Inteligente';
+      case 'human': return 'WhatsApp Humano';
+      default: return code ?? '';
+    }
+  }
+
   getSubscriptionType(subscriptionType: string | undefined): string {
     switch (subscriptionType) {
       case 'FREE':

@@ -17,11 +17,12 @@ export class ChatWidgetComponent implements OnInit {
   sessionId = '';
   input = '';
   busy = false;
-  whatsappNumber = '';
-  whatsappPrefill = '';
-  whatsAppLink = '';
-  humanWhatsapp = '';
   messages: Msg[] = [];
+  whatsappPrefill = '';
+  whatsappNumber = '';
+  whatsappType: 'human' | 'bot' = 'human';
+  showWhatsapp: 'no' | 'yes' = 'yes';
+  whatsAppLink = '';
 
   constructor(
     @Inject(APP_CONFIG) private config: AppConfig,
@@ -42,29 +43,24 @@ export class ChatWidgetComponent implements OnInit {
 
     this.messages.push({ role: 'assistant', text: 'Olá! Como posso ajudar?' });
 
-    try {
-      const cfg = await this.api.getWidgetConfig(this.clientId);
+    const cfg = await this.api.getWidgetConfig(this.clientId);
 
-      this.whatsappNumber = (cfg?.whatsappNumber ?? '').replace(/\D/g, '');
-      this.whatsappPrefill = (cfg?.whatsappPrefill ?? '').toString();
-      this.humanWhatsapp = (cfg?.humanWhatsapp ?? '').toString();
+    this.whatsappType = (cfg?.whatsappType ?? 'human').toString() as any;
+    this.whatsappNumber = (cfg?.whatsappNumber ?? '').replace(/\D/g, '');
+    this.whatsappPrefill = (cfg?.whatsappPrefill ?? '').toString();
+    this.showWhatsapp = (cfg?.showWhatsapp ?? '').toString();
 
-      this.buildWhatsAppLink();
-    } catch (e) {
-      console.log('Widget config error', e);
-    }
-  }
 
-  private buildWhatsAppLink(): void {
-    if (!this.whatsappNumber) {
+    if (this.showWhatsapp === 'no' || !this.whatsappNumber) {
       this.whatsAppLink = '';
-      return;
+    } else {
+      const msg =
+        this.whatsappType === 'bot'
+          ? (this.whatsappPrefill || 'Olá! Quero atendimento automático (IA).')
+          : (this.whatsappPrefill || 'Olá! Vim do site e quero falar com um atendente.');
+
+      this.whatsAppLink = `https://wa.me/${this.whatsappNumber}?text=${encodeURIComponent(msg)}`;
     }
-
-    const base = this.whatsappPrefill || 'Olá! Vim do site e quero falar com um atendente.';
-    const text = `${base}\n\n`;
-
-    this.whatsAppLink = `https://wa.me/${this.whatsappNumber}?text=${encodeURIComponent(text)}`;
   }
 
   openWhatsApp(): void {

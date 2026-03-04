@@ -31,35 +31,43 @@
           <label class="form-label">Senha</label>
           <input type="password" class="form-control" name="passwordHash" [(ngModel)]="model.passwordHash" required />
         </div>
-
-        <div class="col-md-6 mb-3" [class.col-md-12]="editing">
-          <label class="form-label">
-            Informe um número válido com DDD e WhatsApp ativo
-            <span class="text-muted">(para atendimento humano no WhatsApp, se ativado abaixo)</span>
-          </label>
-
-          <input
-            class="form-control"
-            name="phoneNumber"
-            [(ngModel)]="model.phoneNumber"
-            mask="+00 00 00000-0000"
-            placeholder="+55 11 91234-5678"
-            required
-          />
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Tipo WhatsApp</label>
+          <select class="form-select" name="whatsappType" [(ngModel)]="model.whatsappType" required>
+            <option value="human">WhatsApp Humano</option>
+            <option value="bot">WhatsApp Inteligente</option>
+          </select>
+          <small class="text-muted d-block mt-1">
+              Este número será cadastrado no WhatsApp Business (Meta) em até 2 dias úteis. O número não pode ter Whatsapp registrado.
+          </small>
         </div>
       </div>
-
-      <!-- ✅ NOVO: Select humanWhatsapp -->
       <div class="row">
+        <div class="col-md-6 mb-3" [class.col-md-12]="editing">
+          <div class="label-wrapper">
+            <label class="form-label">
+              Número válido com DDD e WhatsApp ativo
+            </label>
+          </div>
+
+          <input class="form-control" name="phoneNumber" [(ngModel)]="model.phoneNumber" mask="+00 00 00000-0000"
+            placeholder="+55 61 99575-3763" required />
+        </div>
+
         <div class="col-md-6 mb-3">
-          <label class="form-label">Ativar botão de WhatsApp (atendimento humano)?</label>
-          <select class="form-select" name="humanWhatsapp" [(ngModel)]="model.humanWhatsapp" required>
+          <div class="label-wrapper">
+            <label class="form-label">
+              Ativar botão de WhatsApp?
+            </label>
+          </div>
+
+          <select class="form-select" name="showWhatsapp" [(ngModel)]="model.showWhatsapp" required>
             <option value="yes">Sim (mostrar botão no widget)</option>
             <option value="no">Não (não mostrar botão)</option>
           </select>
 
           <small class="text-muted d-block mt-1">
-            Se ativado, o widget exibirá um botão “WhatsApp” para conversa normal com humano (se disponível).
+            Se ativado, o widget exibirá um botão “WhatsApp” para conversa normal com humano (se disponível), ou inteligente confrme o Tipo WhatsApp selecionado.
           </small>
         </div>
       </div>
@@ -96,14 +104,8 @@
           </div>
         </div>
 
-        <textarea
-          id="promptText"
-          class="form-control"
-          rows="4"
-          name="promptText"
-          [(ngModel)]="model.promptText"
-          required
-        ></textarea>
+        <textarea id="promptText" class="form-control" rows="4" name="promptText" [(ngModel)]="model.promptText"
+          required></textarea>
       </div>
 
       <div class="row">
