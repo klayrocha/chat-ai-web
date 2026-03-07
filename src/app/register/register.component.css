@@ -1,161 +1,311 @@
 .register-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #1e90ff 0%, #6a11cb 100%);
+  background:
+    radial-gradient(circle at top left, rgba(13, 110, 253, 0.16), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(106, 17, 203, 0.14), transparent 32%),
+    linear-gradient(135deg, #eef4ff 0%, #f7f3ff 100%);
+  padding: 32px 20px;
+}
+
+.register-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 420px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.register-brand {
+  color: #0f172a;
+  padding: 18px 8px 8px 8px;
+  position: sticky;
+  top: 24px;
+}
+
+.brand-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(13, 110, 253, 0.10);
+  color: #0d6efd;
+  font-weight: 800;
+  font-size: 0.86rem;
+  margin-bottom: 18px;
+  border: 1px solid rgba(13, 110, 253, 0.14);
+}
+
+.register-brand h1 {
+  font-size: clamp(1.9rem, 3vw, 2.7rem);
+  line-height: 1.08;
+  font-weight: 800;
+  margin: 0 0 14px 0;
+  color: #0f172a;
+}
+
+.register-brand p {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #475569;
+  margin: 0 0 22px 0;
+}
+
+.brand-points {
   display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.brand-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-weight: 600;
+  color: #334155;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 14px;
+  padding: 12px 14px;
+  backdrop-filter: blur(6px);
+}
+
+.brand-point-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  background: #0d6efd;
+  color: #fff;
+  font-size: 0.8rem;
+  flex: 0 0 22px;
+  margin-top: 1px;
 }
 
 .register-card {
-  width: min(760px, 100%);
-  border-radius: 16px;
-  padding: 32px;
-  background: #fff;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, .18);
+  border: 0;
+  border-radius: 24px;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow:
+    0 12px 36px rgba(15, 23, 42, 0.10),
+    0 2px 10px rgba(15, 23, 42, 0.04);
+  backdrop-filter: blur(10px);
 }
 
-/* dá espaçamento e evita “apertar” inputs */
+.register-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.btn-back {
+  min-width: 110px;
+}
+
+.register-card-head {
+  margin-bottom: 24px;
+}
+
+.register-card-head h3 {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+.register-subtitle {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.96rem;
+}
+
+.form-section {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 18px;
+  padding: 20px 18px 16px;
+  background: #fff;
+  margin-bottom: 18px;
+}
+
+.form-section-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 16px;
+  letter-spacing: 0.01em;
+}
+
 .register-card .row {
   margin-left: -10px;
   margin-right: -10px;
 }
 
-.register-card .row>[class*="col-"] {
+.register-card .row > [class*="col-"] {
   padding-left: 10px;
   padding-right: 10px;
 }
 
-.register-card h3 {
-  font-weight: 700;
-  margin-bottom: 20px;
-}
-
 .register-card .form-label {
-  font-weight: 600;
-  color: #495057;
-  margin-bottom: 6px;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 8px;
+  display: block;
+  font-size: 0.95rem;
 }
 
 .register-card .form-control,
 .register-card .form-select {
-  border-radius: 10px;
-  min-height: 46px;
-  padding: 10px 12px;
+  border-radius: 14px;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid #dbe2ea;
+  background: #fff;
+  box-shadow: none;
+  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.register-card .form-control:focus,
+.register-card .form-select:focus {
+  border-color: rgba(13, 110, 253, 0.45);
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.12);
+  background: #fff;
 }
 
 .register-card textarea.form-control {
-  min-height: 110px;
+  min-height: 140px;
   resize: vertical;
 }
 
+.prompt-textarea {
+  line-height: 1.5;
+}
+
+.field-help {
+  display: block;
+  margin-top: 8px;
+  color: #64748b;
+  line-height: 1.45;
+  font-size: 0.86rem;
+}
+
+.prompt-hint {
+  margin-bottom: 14px;
+  padding: 16px 16px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #f8fbff 0%, #f6f4ff 100%);
+  border: 1px solid rgba(13, 110, 253, 0.16);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  position: relative;
+}
+
+.prompt-hint::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 22px;
+  width: 14px;
+  height: 14px;
+  background: #f8fbff;
+  border-left: 1px solid rgba(13, 110, 253, 0.16);
+  border-top: 1px solid rgba(13, 110, 253, 0.16);
+  transform: rotate(45deg);
+}
+
+.prompt-hint-title {
+  font-weight: 800;
+  color: #0d6efd;
+  margin-bottom: 8px;
+}
+
+.prompt-hint p {
+  margin: 0 0 12px 0;
+  color: #475569;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.prompt-hint-examples-title {
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 6px;
+}
+
+.prompt-hint-examples ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #475569;
+}
+
+.prompt-hint-examples li {
+  margin: 5px 0;
+  line-height: 1.45;
+}
+
+.register-submit {
+  margin-top: 22px;
+}
+
+.register-submit-btn {
+  width: 100%;
+  min-height: 52px;
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: 1rem;
+  box-shadow: 0 10px 22px rgba(13, 110, 253, 0.18);
+}
+
 .register-card .btn {
-  height: 48px;
-  border-radius: 10px;
-  font-weight: 600;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+.alert {
+  border-radius: 14px;
+}
+
+@media (max-width: 991px) {
+  .register-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .register-brand {
+    position: static;
+    padding: 0;
+  }
+
+  .register-brand h1 {
+    font-size: 2rem;
+  }
 }
 
 @media (max-width: 576px) {
   .register-page {
-    padding: 14px;
+    padding: 16px 12px;
   }
 
   .register-card {
-    padding: 20px;
-    border-radius: 14px;
+    padding: 18px 16px;
+    border-radius: 18px;
   }
-}
 
-/* Bloco explicativo “balão” acima do textarea */
-.prompt-block .prompt-hint {
-  margin-top: 8px;
-  margin-bottom: 10px;
-  padding: 14px 14px;
-  border-radius: 12px;
-  background: #f8f9ff;
-  border: 1px solid rgba(13, 110, 253, 0.18);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-  position: relative;
-}
+  .form-section {
+    padding: 16px 14px 12px;
+    border-radius: 16px;
+  }
 
-/* “setinha” do balão */
-.prompt-block .prompt-hint::before {
-  content: "";
-  position: absolute;
-  top: -8px;
-  left: 18px;
-  width: 14px;
-  height: 14px;
-  background: #f8f9ff;
-  border-left: 1px solid rgba(13, 110, 253, 0.18);
-  border-top: 1px solid rgba(13, 110, 253, 0.18);
-  transform: rotate(45deg);
-}
+  .register-card-head h3 {
+    font-size: 1.35rem;
+  }
 
-.prompt-block .prompt-hint-title {
-  font-weight: 700;
-  color: #0d6efd;
-  margin-bottom: 6px;
-}
+  .register-brand h1 {
+    font-size: 1.65rem;
+  }
 
-.prompt-block .prompt-hint p {
-  margin: 0 0 10px 0;
-  color: #495057;
-  line-height: 1.35;
-  font-weight: 500;
-  font-size: 0.95rem;
-}
-
-.prompt-block .prompt-hint-examples-title {
-  font-weight: 700;
-  color: #343a40;
-  margin-bottom: 6px;
-}
-
-.prompt-block .prompt-hint-examples ul {
-  margin: 0;
-  padding-left: 18px;
-  color: #495057;
-}
-
-.prompt-block .prompt-hint-examples li {
-  margin: 4px 0;
-}
-
-/* textarea mais confortável */
-.prompt-block textarea.form-control {
-  min-height: 140px;
-  line-height: 1.35;
-}
-
-.label-fixed-height {
-  min-height: 48px;
-  /* ajuste conforme necessário */
-  display: flex;
-  align-items: flex-end;
-  /* ou center */
-}
-
-/* wrapper que garante altura igual dos labels */
-.label-wrapper {
-  min-height: 56px;
-  /* ajuste fino aqui */
-  display: flex;
-  align-items: flex-end;
-  /* alinha o texto embaixo */
-}
-
-/* label continua NORMAL, sem flex */
-.register-card .form-label {
-  font-weight: 600;
-  color: #495057;
-  margin-bottom: 6px;
-  display: block;
-}
-
-/* span continua quebrando linha normalmente */
-.register-card .form-label span {
-  display: block;
-  font-weight: 400;
-  font-size: 0.85rem;
+  .brand-point {
+    padding: 10px 12px;
+  }
 }

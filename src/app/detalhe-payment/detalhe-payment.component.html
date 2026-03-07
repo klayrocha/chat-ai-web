@@ -1,54 +1,104 @@
 <div class="payment-page">
-  <div class="card payment-card shadow-lg">
+  <div class="payment-shell">
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <button type="button" class="btn btn-outline-secondary" (click)="back()">
-        ← Voltar
-      </button>
+    <div class="payment-brand">
+      <div class="brand-badge">Seu Assistente Inteligente</div>
+      <h1>Renove sua inscrição</h1>
+      <p>
+        Escolha o plano ideal para o seu volume de mensagens e continue oferecendo
+        atendimento no site e no WhatsApp com estabilidade e suporte contínuo.
+      </p>
 
-      <span class="text-muted small"></span>
+      <div class="brand-points">
+        <div class="brand-point">
+          <span class="brand-point-icon">✓</span>
+          <span>Planos anuais com cobrança clara e previsível</span>
+        </div>
+        <div class="brand-point">
+          <span class="brand-point-icon">✓</span>
+          <span>Continue usando chat no site e WhatsApp inteligente</span>
+        </div>
+        <div class="brand-point">
+          <span class="brand-point-icon">✓</span>
+          <span>Renovação rápida com redirecionamento para pagamento</span>
+        </div>
+      </div>
     </div>
 
-    <h3 class="text-center mb-4">Renovar Inscrição</h3>
+    <div class="card payment-card shadow-lg">
 
-    <form (ngSubmit)="submit()">
-
-      <div class="mb-3">
-        <label class="form-label">Escolha o plano</label>
-        <select class="form-select" [(ngModel)]="selectedPlan" name="plan" required>
-          <option value="3000">Plano Essential — 3000 mensagens mensal</option>
-          <option value="10000">Plano Premium — 10.000 mensagens mensal</option>
-        </select>
+      <div class="payment-topbar">
+        <button type="button" class="btn btn-outline-secondary btn-topbar" (click)="back()">
+          ← Voltar
+        </button>
       </div>
 
-      <div class="alert alert-info mt-3">
-        <strong>Informações de cobrança</strong>
-        <ul class="mb-0 mt-2">
-          <li>
-            <strong>Plano Essential (3000 mensagens mensal):</strong>
-            R$ 2.400,00 cobrados no cartão
-            <span class="text-muted">(custo médio mensal de R$ 200,00)</span>
-          </li>
-          <li>
-            <strong>Plano Premium (10.000 mensagens mensal):</strong>
-            R$ 3.600,00 cobrados no cartão
-            <span class="text-muted">(custo médio mensal de R$ 300,00)</span>
-          </li>
-        </ul>
+      <div class="payment-card-head">
+        <h3>Renovar inscrição</h3>
+        <p class="payment-subtitle">
+          Selecione o plano que melhor atende o seu negócio e prossiga para o pagamento.
+        </p>
       </div>
 
-      <div *ngIf="error" class="alert alert-danger mt-3">
-        {{ error }}
-      </div>
+      <form (ngSubmit)="submit()">
 
-      <button
-        type="button"
-        class="btn btn-primary w-100 mt-4"
-        [disabled]="loading"
-        (click)="openRenew()">
-        {{ loading ? 'Redirecionando...' : 'Continuar com o pagamento' }}
-      </button>
+        <section class="payment-section">
+          <div class="payment-section-title">Plano</div>
 
-    </form>
+          <div class="mb-0">
+            <label class="form-label">Escolha o plano</label>
+            <select class="form-select" [(ngModel)]="selectedPlan" name="plan" required>
+              <option value="3000">Plano Essential — 3.000 mensagens mensais</option>
+              <option value="10000">Plano Premium — 10.000 mensagens mensais</option>
+            </select>
+          </div>
+        </section>
+
+        <section class="payment-section">
+          <div class="payment-section-title">Informações de cobrança</div>
+
+          <div class="plan-list">
+            <div class="plan-item">
+              <div class="plan-item-head">
+                <h6>Plano Essential</h6>
+                <span class="plan-pill">3.000 mensagens/mês</span>
+              </div>
+
+              <div class="plan-price">R$ 2.400,00 <small>/ ano</small></div>
+              <p class="plan-note">
+                Cobrança anual no cartão, com custo médio mensal de <strong>R$ 200,00</strong>.
+              </p>
+            </div>
+
+            <div class="plan-item">
+              <div class="plan-item-head">
+                <h6>Plano Premium</h6>
+                <span class="plan-pill">10.000 mensagens/mês</span>
+              </div>
+
+              <div class="plan-price">R$ 3.600,00 <small>/ ano</small></div>
+              <p class="plan-note">
+                Cobrança anual no cartão, com custo médio mensal de <strong>R$ 300,00</strong>.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <div *ngIf="error" class="alert alert-danger mt-3">
+          {{ error }}
+        </div>
+
+        <div class="payment-submit">
+          <button
+            type="button"
+            class="btn btn-primary payment-submit-btn"
+            [disabled]="loading"
+            (click)="openRenew()">
+            {{ loading ? 'Redirecionando...' : 'Continuar com o pagamento' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
   </div>
 </div>

@@ -1,142 +1,174 @@
-<div *ngIf="successMessage" class="alert alert-success">
+<div *ngIf="successMessage" class="detail-floating-alert alert alert-success">
   {{ successMessage }}
 </div>
 
-<div class="container-fluid detail-page" *ngIf="!loading && client">
-  <div class="card shadow-sm">
-    <div class="card-body">
+<div class="detail-page" *ngIf="!loading && client">
+  <div class="detail-shell">
 
-      <div class="detail-header mb-4">
-        <div class="detail-title">
-          <h3 class="mb-1">{{ client.companyName }}</h3>
-          <small class="text-muted">Detalhes do cliente</small>
-        </div>
-
-        <div class="detail-topbar">
-          <button class="btn btn-light btn-sm detail-logout" (click)="logout()">
-            Sair
-          </button>
-        </div>
-      </div>
-
-      <div class="row mb-2">
-        <div class="col-sm-4 fw-bold">O seu identificador</div>
-        <div class="col-sm-8">{{ client.uuid }}</div>
-      </div>
-
-      <div class="row mb-2">
-        <div class="col-sm-4 fw-bold">Nome</div>
-        <div class="col-sm-8">{{ client.fullName }}</div>
-      </div>
-
-      <div class="row mb-2">
-        <div class="col-sm-4 fw-bold">E-mail</div>
-        <div class="col-sm-8">{{ client.email }}</div>
-      </div>
-
-      <div class="row mb-2">
-        <div class="col-sm-4 fw-bold">Telefone</div>
-        <div class="col-sm-8">{{ client.phoneNumber }}</div>
-      </div>
-
-      <div class="row mb-2">
-        <div class="col-sm-4 fw-bold">Website</div>
-        <div class="col-sm-8">
-          <a [href]="client.companyWebsiteUrl" target="_blank">
-            {{ client.companyWebsiteUrl }}
-          </a>
-        </div>
-      </div>
-
-      <div class="row mb-4">
-        <div class="col-sm-4 fw-bold">Idioma</div>
-        <div class="col-sm-8">{{ languageLabel(client.languageCode) }}</div>
-      </div>
-
-      <div class="row mb-4">
-        <div class="col-sm-4 fw-bold">Tipo WhatsApp</div>
-        <div class="col-sm-8">{{ whatsTypeAppButton(client.whatsappType) }}</div>
-      </div>
-
-      <div class="row mb-4">
-        <div class="col-sm-4 fw-bold">Botão WhatsApp</div>
-        <div class="col-sm-8">{{ whatsAppButton(client.showWhatsapp) }}</div>
-      </div>
-
-      <!-- ✅ NOVA SEÇÃO: Acessos rápidos -->
-      <div class="mt-4">
-        <h5 class="mb-3">Mensagens</h5>
-
-        <div class="row g-3">
-          <div class="col-md-6">
-            <div class="card border-0 shadow-sm h-100">
-              <div class="card-body d-flex flex-column">
-                <h6 class="mb-2">Mensagens da Web</h6>
-                <p class="text-muted mb-3">
-                  Consulte as perguntas e respostas realizadas pelo chat do site.
-                </p>
-
-                <div class="mt-auto">
-                  <button class="btn btn-outline-primary w-100" (click)="goToWebMessages()">
-                    Ver mensagens da Web
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="card border-0 shadow-sm h-100">
-              <div class="card-body d-flex flex-column">
-                <h6 class="mb-2">Mensagens do WhatsApp</h6>
-                <p class="text-muted mb-3">
-                  Consulte as mensagens recebidas e enviadas pelo WhatsApp inteligente.
-                </p>
-
-                <div class="mt-auto">
-                  <button
-                    class="btn btn-outline-success w-100"
-                    (click)="goToWhatsappMessages()"
-                    [disabled]="client.whatsappType === 'human'">
-                    Ver mensagens do WhatsApp
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <h5 class="mt-4">Informações para melhorar o atendimento</h5>
-      <p class="text-muted">
-        {{ client.promptText }}
+    <div class="detail-brand">
+      <div class="brand-badge">Seu Assistente Inteligente</div>
+      <h1>{{ client.companyName }}</h1>
+      <p>
+        Gerencie os dados da sua conta, acompanhe mensagens do site e do WhatsApp e mantenha
+        sua configuração sempre atualizada.
       </p>
 
-      <div class="d-flex justify-content-end mt-4">
-        <button class="btn btn-outline-primary" (click)="editClient()">
-          Editar
+      <div class="brand-points">
+        <div class="brand-point">
+          <span class="brand-point-icon">✓</span>
+          <span>Visualize as mensagens da Web e do WhatsApp</span>
+        </div>
+        <div class="brand-point">
+          <span class="brand-point-icon">✓</span>
+          <span>Edite dados da empresa e do atendimento</span>
+        </div>
+        <div class="brand-point" *ngIf="client.subscription">
+          <span class="brand-point-icon">✓</span>
+          <span>Acompanhe sua assinatura e o limite mensal</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card detail-card shadow-lg">
+      <div class="detail-topbar">
+        <button class="btn btn-outline-secondary btn-topbar" (click)="logout()">
+          Sair
         </button>
       </div>
 
-      <div *ngIf="client.subscription" class="mt-4">
-        <h5>Inscrição</h5>
+      <div class="detail-card-head">
+        <h3>Detalhes do cliente</h3>
+        <p class="detail-subtitle">
+          Consulte as informações do seu cadastro e acesse rapidamente os recursos da plataforma.
+        </p>
+      </div>
 
-        <ul class="list-group">
-          <li class="list-group-item">
-            <strong>Status:</strong>
-            {{ getSubscriptionStatus(client.subscription.status) }}
-          </li>
-          <li class="list-group-item">
-            <strong>Tipo da Inscrição:</strong>
-            {{ getSubscriptionType(client.subscription.type) }}
-          </li>
-          <li class="list-group-item">
-            <strong>Limite de mensagens mensal:</strong> {{ client.subscription.monthlyMessageLimit }}
-          </li>
-          <li class="list-group-item subscription-period">
-            <strong>Período:</strong>
+      <!-- DADOS -->
+      <section class="detail-section">
+        <div class="detail-section-title">Dados da conta</div>
 
-            <div class="subscription-period-content">
+        <div class="detail-grid">
+          <div class="detail-item detail-item-full">
+            <div class="detail-label">O seu identificador</div>
+            <div class="detail-value detail-mono">{{ client.uuid }}</div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-label">Nome</div>
+            <div class="detail-value">{{ client.fullName }}</div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-label">E-mail</div>
+            <div class="detail-value">{{ client.email }}</div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-label">Telefone</div>
+            <div class="detail-value">{{ client.phoneNumber }}</div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-label">Idioma</div>
+            <div class="detail-value">{{ languageLabel(client.languageCode) }}</div>
+          </div>
+
+          <div class="detail-item detail-item-full">
+            <div class="detail-label">Website</div>
+            <div class="detail-value">
+              <a [href]="client.companyWebsiteUrl" target="_blank">
+                {{ client.companyWebsiteUrl }}
+              </a>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-label">Tipo WhatsApp</div>
+            <div class="detail-value">{{ whatsTypeAppButton(client.whatsappType) }}</div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-label">Botão WhatsApp</div>
+            <div class="detail-value">{{ whatsAppButton(client.showWhatsapp) }}</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AÇÕES -->
+      <section class="detail-section">
+        <div class="detail-section-title">Mensagens</div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="quick-card h-100">
+              <div class="quick-card-icon">💬</div>
+              <h6>Mensagens da Web</h6>
+              <p>
+                Consulte as perguntas e respostas realizadas pelo chat do site.
+              </p>
+              <button class="btn btn-outline-primary w-100 mt-auto" (click)="goToWebMessages()">
+                Ver mensagens da Web
+              </button>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="quick-card h-100">
+              <div class="quick-card-icon">🟢</div>
+              <h6>Mensagens do WhatsApp</h6>
+              <p>
+                Consulte as mensagens recebidas e enviadas pelo WhatsApp inteligente.
+              </p>
+              <button
+                class="btn btn-outline-success w-100 mt-auto"
+                (click)="goToWhatsappMessages()"
+                [disabled]="client.whatsappType === 'human'">
+                Ver mensagens do WhatsApp
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROMPT -->
+      <section class="detail-section">
+        <div class="detail-section-title">Informações para melhorar o atendimento</div>
+
+        <div class="prompt-box">
+          {{ client.promptText }}
+        </div>
+      </section>
+
+      <!-- ASSINATURA -->
+      <section class="detail-section" *ngIf="client.subscription">
+        <div class="detail-section-title">Inscrição</div>
+
+        <div class="subscription-box">
+          <div class="subscription-row">
+            <div class="subscription-label">Status</div>
+            <div class="subscription-value">
+              {{ getSubscriptionStatus(client.subscription.status) }}
+            </div>
+          </div>
+
+          <div class="subscription-row">
+            <div class="subscription-label">Tipo da inscrição</div>
+            <div class="subscription-value">
+              {{ getSubscriptionType(client.subscription.type) }}
+            </div>
+          </div>
+
+          <div class="subscription-row">
+            <div class="subscription-label">Limite mensal</div>
+            <div class="subscription-value">
+              {{ client.subscription.monthlyMessageLimit }}
+            </div>
+          </div>
+
+          <div class="subscription-row subscription-row-period">
+            <div class="subscription-label">Período</div>
+
+            <div class="subscription-value subscription-period-content">
               <span class="text-muted">Início:</span>
               {{ client.subscription.startDate | date:'dd/MM/yyyy' }}
               <span class="mx-2">→</span>
@@ -144,21 +176,29 @@
               {{ client.subscription.endDate | date:'dd/MM/yyyy' }}
             </div>
 
-            <button type="button" class="btn btn-primary btn-sm subscription-renew" (click)="goToPayment()">
+            <button
+              type="button"
+              class="btn btn-primary btn-sm subscription-renew"
+              (click)="goToPayment()">
               Renovar
             </button>
-          </li>
-        </ul>
-      </div>
+          </div>
+        </div>
+      </section>
 
+      <div class="detail-actions">
+        <button class="btn btn-primary detail-edit-btn" (click)="editClient()">
+          Editar dados
+        </button>
+      </div>
     </div>
   </div>
 </div>
 
-<div *ngIf="loading" class="text-center py-5">
+<div *ngIf="loading" class="detail-loading">
   <div class="spinner-border"></div>
 </div>
 
-<div *ngIf="error" class="alert alert-danger container mt-4">
+<div *ngIf="error" class="alert alert-danger detail-error">
   {{ error }}
 </div>

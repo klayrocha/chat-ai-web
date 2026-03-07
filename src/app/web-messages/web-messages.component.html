@@ -1,95 +1,102 @@
-<div class="container mt-3 wa-page">
+<div class="web-page">
 
-  <div class="wa-header">
-    <div>
-      <h4 class="mb-0">Mensagens da Web</h4>
-    </div>
+  <div class="web-shell">
 
-    <div class="wa-actions">
-      <button class="btn btn-outline-secondary" (click)="goBack()">
-        Voltar para detalhes
-      </button>
-    </div>
-  </div>
+    <div class="web-brand">
+      <div class="brand-badge">Seu Assistente Inteligente</div>
+      <h1>Mensagens da Web</h1>
+      <p>
+        Consulte as perguntas e respostas realizadas no chat do seu site.
+        Use o filtro por dia para localizar conversas específicas e acompanhar o histórico do atendimento.
+      </p>
 
-  <div class="card shadow-sm mb-3">
-    <div class="card-body">
-
-      <div class="row g-2 align-items-end">
-        <div class="col-sm-4">
-          <label class="form-label">Dia</label>
-          <input
-            class="form-control"
-            type="date"
-            [value]="day"
-            (change)="onChangeDay(($any($event.target)).value)"
-          />
+      <div class="brand-points">
+        <div class="brand-point">
+          <span class="brand-point-icon">✓</span>
+          <span>Veja perguntas e respostas do chat do site</span>
+        </div>
+        <div class="brand-point">
+          <span class="brand-point-icon">✓</span>
+          <span>Filtre por dia para encontrar conversas com facilidade</span>
+        </div>
+        <div class="brand-point">
+          <span class="brand-point-icon">✓</span>
+          <span>Carregue mais resultados sem perder performance</span>
         </div>
       </div>
-
     </div>
-  </div>
 
-  <div *ngIf="error" class="alert alert-danger">
-    {{ error }}
-  </div>
-
-  <div *ngIf="loading" class="text-center py-3">
-    <div class="spinner-border"></div>
-  </div>
-
-  <div *ngIf="!loading && items.length === 0" class="alert alert-warning">
-    Nenhuma mensagem encontrada para este dia.
-  </div>
-
-  <div *ngIf="items.length > 0" class="card shadow-sm">
-    <div class="card-body">
-
-      <div class="table-responsive">
-        <table class="table table-sm align-middle">
-          <thead>
-            <tr>
-              <th>Data</th>
-              <th>Pergunta</th>
-              <th>Resposta</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr *ngFor="let m of items">
-              <td>
-                <span class="text-muted">{{ m.createdAt | date:'dd/MM/yyyy HH:mm:ss' }}</span>
-              </td>
-
-              <td class="wa-text">
-                <div class="wa-bubble wa-bubble-in">
-                  <div class="wa-bubble-body">
-                    {{ m.question }}
-                  </div>
-                </div>
-              </td>
-
-              <td class="wa-text">
-                <div class="wa-bubble wa-bubble-out">
-                  <div class="wa-bubble-body">
-                    {{ m.answer }}
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="d-flex justify-content-between align-items-center mt-3">
-        <button class="btn btn-outline-primary"
-                (click)="loadMore()"
-                [disabled]="loading || !hasMore || !nextCursor">
-          Carregar mais
+    <div class="card web-card shadow-lg">
+      <div class="web-topbar">
+        <button class="btn btn-outline-secondary btn-topbar" (click)="goBack()">
+          Voltar para detalhes
         </button>
       </div>
 
+      <div class="web-card-head">
+        <h3>Histórico de mensagens da Web</h3>
+        <p class="web-subtitle">
+          Navegue pelas mensagens registradas no atendimento do site.
+        </p>
+      </div>
+
+      <section class="web-section">
+        <div class="web-section-title">Filtro</div>
+
+        <div class="row g-2 align-items-end">
+          <div class="col-sm-4">
+            <label class="form-label">Dia</label>
+            <input class="form-control" type="date" [value]="day" (change)="onChangeDay(($any($event.target)).value)" />
+          </div>
+        </div>
+      </section>
+
+      <div *ngIf="error" class="alert alert-danger mt-3">
+        {{ error }}
+      </div>
+
+      <div *ngIf="loading" class="web-loading">
+        <div class="spinner-border"></div>
+      </div>
+
+      <div *ngIf="!loading && items.length === 0" class="alert alert-warning mt-3">
+        Nenhuma mensagem encontrada para este dia.
+      </div>
+
+      <section *ngIf="items.length > 0" class="web-section">
+        <div class="web-section-title">Resultados</div>
+
+        <div class="web-list">
+          <div class="web-message-card" *ngFor="let m of items">
+            <div class="web-message-meta">
+              <div class="web-meta-item">
+                <span class="web-meta-label">Data</span>
+                <span class="web-meta-value">{{ m.createdAt | date:'dd/MM/yyyy HH:mm:ss' }}</span>
+              </div>
+            </div>
+
+            <div class="web-bubble web-bubble-question">
+              <div class="web-bubble-label">Pergunta</div>
+              <div class="web-bubble-body">
+                {{ m.question }}
+              </div>
+            </div>
+
+            <div class="web-bubble web-bubble-answer">
+              <div class="web-bubble-label">Resposta</div>
+              <div class="web-bubble-body">
+                {{ m.answer }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="web-footer-actions">
+          <button class="btn btn-outline-primary" (click)="loadMore()" [disabled]="loading || !hasMore || !nextCursor">
+            Carregar mais
+          </button>
+        </div>
+      </section>
     </div>
   </div>
-
 </div>

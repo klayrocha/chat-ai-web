@@ -1,51 +1,336 @@
-.wa-page {
-  padding-bottom: 24px;
+.web-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(13, 110, 253, 0.16), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(106, 17, 203, 0.14), transparent 32%),
+    linear-gradient(135deg, #eef4ff 0%, #f7f3ff 100%);
+  padding: 32px 20px;
 }
 
-.wa-header {
+.web-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.web-brand {
+  color: #0f172a;
+  padding: 18px 8px 8px 8px;
+  position: sticky;
+  top: 24px;
+}
+
+.brand-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(13, 110, 253, 0.10);
+  color: #0d6efd;
+  font-weight: 800;
+  font-size: 0.86rem;
+  margin-bottom: 18px;
+  border: 1px solid rgba(13, 110, 253, 0.14);
+}
+
+.web-brand h1 {
+  font-size: clamp(1.9rem, 3vw, 2.6rem);
+  line-height: 1.08;
+  font-weight: 800;
+  margin: 0 0 14px 0;
+  color: #0f172a;
+}
+
+.web-brand p {
+  font-size: 1.06rem;
+  line-height: 1.72;
+  color: #475569;
+  margin: 0 0 22px 0;
+}
+
+.brand-points {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.brand-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  color: #334155;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 14px;
+  padding: 12px 14px;
+  backdrop-filter: blur(6px);
+}
+
+.brand-point-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #0d6efd;
+  color: #fff;
+  font-size: 0.8rem;
+  flex: 0 0 22px;
+  margin-top: 1px;
+}
+
+.web-card {
+  border: 0;
+  border-radius: 24px;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow:
+    0 12px 36px rgba(15, 23, 42, 0.10),
+    0 2px 10px rgba(15, 23, 42, 0.04);
+  backdrop-filter: blur(10px);
+}
+
+.web-topbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+.btn-topbar {
+  min-width: 150px;
+}
+
+.web-card-head {
+  margin-bottom: 24px;
+}
+
+.web-card-head h3 {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+.web-subtitle {
+  margin: 0;
+  color: #64748b;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.web-section {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 18px;
+  padding: 20px 18px 18px;
+  background: #fff;
+  margin-bottom: 18px;
+}
+
+.web-section-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 16px;
+  letter-spacing: 0.01em;
+}
+
+.form-label {
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 8px;
+  display: block;
+  font-size: 0.95rem;
+}
+
+.form-control {
+  border-radius: 14px;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid #dbe2ea;
+  background: #fff;
+  box-shadow: none;
+  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.form-control:focus {
+  border-color: rgba(13, 110, 253, 0.45);
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.12);
+  background: #fff;
+}
+
+.web-loading {
+  min-height: 120px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 12px;
+  justify-content: center;
 }
 
-.wa-actions {
+.web-list {
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.wa-text {
-  width: 42%;
+.web-message-card {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 18px;
+  background: #f8fafc;
+  padding: 16px;
 }
 
-.wa-bubble {
-  display: inline-block;
-  max-width: 100%;
-  border-radius: 10px;
-  padding: 10px 12px;
-  line-height: 1.35;
+.web-message-meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.web-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.web-meta-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.web-meta-value {
+  font-size: 0.98rem;
+  color: #0f172a;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.web-bubble {
+  display: block;
+  width: 100%;
+  border-radius: 16px;
+  padding: 16px 18px;
+  line-height: 1.5;
   border: 1px solid #e5e7eb;
   box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
 }
 
-.wa-bubble-in {
+.web-bubble+.web-bubble {
+  margin-top: 12px;
+}
+
+.web-bubble-question {
   background: #f8f9fa;
 }
 
-.wa-bubble-out {
+.web-bubble-answer {
   background: #eef2ff;
 }
 
-.wa-bubble-body {
+.web-bubble-label {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 10px;
+}
+
+.web-bubble-body {
   white-space: pre-wrap;
   word-break: break-word;
   overflow-wrap: anywhere;
-  max-height: 140px;
-  overflow: auto;
+  color: #0f172a;
+  font-size: 1.08rem;
+  line-height: 1.72;
 }
 
-table td,
-table th {
-  vertical-align: top;
+.web-footer-actions {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 18px;
+}
+
+.web-card .btn {
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+.alert {
+  border-radius: 14px;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+@media (max-width: 991px) {
+  .web-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .web-brand {
+    position: static;
+    padding: 0;
+  }
+
+  .web-brand h1 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .web-page {
+    padding: 16px 12px;
+  }
+
+  .web-card {
+    padding: 18px 16px;
+    border-radius: 18px;
+  }
+
+  .web-section {
+    padding: 16px 14px 14px;
+    border-radius: 16px;
+  }
+
+  .web-card-head h3 {
+    font-size: 1.35rem;
+  }
+
+  .web-brand h1 {
+    font-size: 1.65rem;
+  }
+
+  .brand-point {
+    padding: 10px 12px;
+  }
+
+  .btn-topbar {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .web-topbar {
+    justify-content: stretch;
+  }
+
+  .web-bubble {
+    padding: 14px 14px;
+  }
+
+  .web-bubble-body {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
 }

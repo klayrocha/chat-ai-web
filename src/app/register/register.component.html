@@ -1,145 +1,223 @@
-<!-- register.component.html (corrigido + select humanWhatsapp) -->
 <div class="register-page">
-  <div class="card register-card shadow-lg">
-    <div *ngIf="editing" class="d-flex justify-content-between align-items-center mb-3">
-      <button type="button" class="btn btn-outline-secondary" (click)="goBack()">
-        ← Voltar
-      </button>
+  <div class="register-shell">
 
-      <span class="text-muted small"></span>
+    <div class="register-brand">
+      <div class="brand-badge">Seu Assistente Inteligente</div>
+      <h1>{{ editing ? 'Atualize os dados da sua conta' : 'Crie sua conta e configure seu atendimento' }}</h1>
+      <p>
+        {{ editing
+        ? 'Edite as informações da sua empresa, do widget e das opções de WhatsApp.'
+        : 'Preencha os dados abaixo para ativar o chat no site e configurar WhatsApp humano ou inteligente.' }}
+      </p>
+
+      <div class="brand-points" *ngIf="!editing">
+        <div class="brand-point">
+          <span class="brand-point-icon">✓</span>
+          <span>Chat no site com instalação simples</span>
+        </div>
+        <div class="brand-point">
+          <span class="brand-point-icon">✓</span>
+          <span>Opção de WhatsApp humano ou inteligente</span>
+        </div>
+        <div class="brand-point">
+          <span class="brand-point-icon">✓</span>
+          <span>Configuração pensada para empresas</span>
+        </div>
+      </div>
     </div>
 
-    <h3 class="text-center mb-4">
-      {{ editing ? 'Editar conta' : 'Crie a sua conta' }}
-    </h3>
-
-    <form (ngSubmit)="submit()" #f="ngForm">
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label class="form-label">Nome Completo</label>
-          <input class="form-control" name="fullName" [(ngModel)]="model.fullName" required />
-        </div>
-
-        <div class="col-md-6 mb-3" *ngIf="!editing">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-control" name="email" [(ngModel)]="model.email" required />
-        </div>
+    <div class="card register-card shadow-lg">
+      <div *ngIf="editing" class="register-topbar">
+        <button type="button" class="btn btn-outline-secondary btn-back" (click)="goBack()">
+          ← Voltar
+        </button>
       </div>
 
-      <div class="row">
-        <div class="col-md-6 mb-3" *ngIf="!editing">
-          <label class="form-label">Senha</label>
-          <input type="password" class="form-control" name="passwordHash" [(ngModel)]="model.passwordHash" required />
-        </div>
-        <div class="col-md-6 mb-3" *ngIf="!editing">
-          <label class="form-label">Tipo WhatsApp</label>
-          <select class="form-select" name="whatsappType" [(ngModel)]="model.whatsappType" required>
-            <option value="human">WhatsApp Humano</option>
-            <option value="bot">WhatsApp Inteligente</option>
-          </select>
-          <small class="text-muted d-block mt-1">
-              Este número será cadastrado no WhatsApp Business (Meta) em até 2 dias úteis. O número não pode ter Whatsapp registrado.
-          </small>
-        </div>
+      <div class="register-card-head">
+        <h3>{{ editing ? 'Editar conta' : 'Criar conta' }}</h3>
+        <p class="register-subtitle">
+          {{ editing
+          ? 'Revise os dados abaixo e salve suas alterações.'
+          : 'Preencha suas informações para começar a usar a plataforma.' }}
+        </p>
       </div>
-      <div class="row">
-        <div class="col-md-6 mb-3" [class.col-md-12]="editing">
-          <div class="label-wrapper">
-            <label class="form-label">
-              Número válido com DDD e WhatsApp ativo
-            </label>
+
+      <form (ngSubmit)="submit()" #f="ngForm" novalidate>
+
+        <!-- DADOS PESSOAIS -->
+        <section class="form-section">
+          <div class="form-section-title">Dados principais</div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Nome completo</label>
+              <input class="form-control" name="fullName" [(ngModel)]="model.fullName" required />
+            </div>
+
+            <div class="col-md-6 mb-3" *ngIf="!editing">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-control" name="email" [(ngModel)]="model.email" required />
+            </div>
           </div>
 
-          <input class="form-control" name="phoneNumber" [(ngModel)]="model.phoneNumber" mask="+00 00 00000-0000"
-            placeholder="+55 61 99575-3763" required />
-        </div>
+          <div class="row" *ngIf="!editing">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Senha</label>
+              <input type="password" class="form-control" name="passwordHash" [(ngModel)]="model.passwordHash" required />
+            </div>
 
-        <div class="col-md-6 mb-3">
-          <div class="label-wrapper">
-            <label class="form-label">
-              Ativar botão de WhatsApp?
-            </label>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Idioma</label>
+              <select class="form-select" name="languageCode" [(ngModel)]="model.languageCode" required>
+                <option value="pt-BR">Português (Brasil)</option>
+                <option value="pt-PT">Português (Portugal)</option>
+                <option value="en-US">English</option>
+              </select>
+            </div>
           </div>
 
-          <select class="form-select" name="showWhatsapp" [(ngModel)]="model.showWhatsapp" required>
-            <option value="yes">Sim (mostrar botão no widget)</option>
-            <option value="no">Não (não mostrar botão)</option>
-          </select>
-
-          <small class="text-muted d-block mt-1">
-            Se ativado, o widget exibirá um botão “WhatsApp” para conversa normal com humano (se disponível), ou inteligente confrme o Tipo WhatsApp selecionado.
-          </small>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Nome da Empresa</label>
-        <input class="form-control" name="companyName" [(ngModel)]="model.companyName" required />
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Endereço do Site (https://www.exemplo.com.br)</label>
-        <input class="form-control" name="companyWebsiteUrl" [(ngModel)]="model.companyWebsiteUrl" required />
-      </div>
-
-      <div class="mb-3 prompt-block">
-        <label class="form-label" for="promptText">Informações para melhorar o atendimento</label>
-
-        <div class="prompt-hint" *ngIf="!editing">
-          <div class="prompt-hint-title">O que escrever aqui?</div>
-          <p>
-            Coloque informações que ajudem a responder seus clientes com mais precisão.
-            Pense no que eles perguntam com frequência.
-          </p>
-
-          <div class="prompt-hint-examples">
-            <div class="prompt-hint-examples-title">Exemplos:</div>
-            <ul>
-              <li>Meu telefone de contato é +55 (61) 9999999</li>
-              <li>Meu email para contato é email@email.com</li>
-              <li>Horário: segunda a sábado, 08h às 20h (exceto feriados)</li>
-              <li>Vendemos roupas femininas e masculinas</li>
-              <li>Fechamos às 20h</li>
-            </ul>
+          <div class="row" *ngIf="editing">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Idioma</label>
+              <select class="form-select" name="languageCode" [(ngModel)]="model.languageCode" required>
+                <option value="pt-BR">Português (Brasil)</option>
+                <option value="pt-PT">Português (Portugal)</option>
+                <option value="en-US">English</option>
+              </select>
+            </div>
           </div>
+        </section>
+
+        <!-- DADOS DA EMPRESA -->
+        <section class="form-section">
+          <div class="form-section-title">Dados da empresa</div>
+
+          <div class="mb-3">
+            <label class="form-label">Nome da empresa</label>
+            <input class="form-control" name="companyName" [(ngModel)]="model.companyName" required />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Endereço do site</label>
+            <input
+              class="form-control"
+              name="companyWebsiteUrl"
+              [(ngModel)]="model.companyWebsiteUrl"
+              placeholder="https://www.exemplo.com.br"
+              required
+            />
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Número com DDD e WhatsApp ativo</label>
+              <input
+                class="form-control"
+                name="phoneNumber"
+                [(ngModel)]="model.phoneNumber"
+                mask="+00 00 00000-0000"
+                placeholder="+55 61 99575-3763"
+                required
+              />
+              <small class="field-help">
+                Informe um número válido para contato e configuração do atendimento.
+              </small>
+            </div>
+
+            <div class="col-md-6 mb-3" *ngIf="!editing">
+              <label class="form-label">Ramo</label>
+              <select class="form-select" name="vertical" [(ngModel)]="model.vertical" required>
+                <option value="ecommerce">E-commerce</option>
+                <option value="clinic">Clínica</option>
+                <option value="salon">Salão</option>
+                <option value="general">Outros</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <!-- WHATSAPP -->
+        <section class="form-section">
+          <div class="form-section-title">Configuração do WhatsApp</div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3" *ngIf="!editing">
+              <label class="form-label">Tipo WhatsApp</label>
+              <select class="form-select" name="whatsappType" [(ngModel)]="model.whatsappType" required>
+                <option value="human">WhatsApp Humano</option>
+                <option value="bot">WhatsApp Inteligente</option>
+              </select>
+              <small class="field-help">
+                Este número será cadastrado no WhatsApp Business (Meta) em até 2 dias úteis.
+                O número não pode já estar registrado no WhatsApp Business da Meta para bot.
+              </small>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Ativar botão de WhatsApp?</label>
+              <select class="form-select" name="showWhatsapp" [(ngModel)]="model.showWhatsapp" required>
+                <option value="yes">Sim, mostrar botão no widget</option>
+                <option value="no">Não mostrar botão</option>
+              </select>
+
+              <small class="field-help">
+                Se ativado, o widget exibirá um botão de WhatsApp para atendimento humano ou inteligente,
+                conforme o tipo configurado.
+              </small>
+            </div>
+          </div>
+        </section>
+
+        <!-- PROMPT -->
+        <section class="form-section">
+          <div class="form-section-title">Informações para melhorar o atendimento</div>
+
+          <div class="prompt-hint" *ngIf="!editing">
+            <div class="prompt-hint-title">O que escrever aqui?</div>
+            <p>
+              Coloque informações que ajudem o assistente a responder seus clientes com mais precisão.
+              Pense nas dúvidas mais comuns que seu negócio recebe.
+            </p>
+
+            <div class="prompt-hint-examples">
+              <div class="prompt-hint-examples-title">Exemplos úteis:</div>
+              <ul>
+                <li>Meu telefone de contato é +55 (61) 99999-9999</li>
+                <li>Meu email para contato é contato@empresa.com</li>
+                <li>Horário de atendimento: segunda a sábado, das 8h às 20h</li>
+                <li>Vendemos roupas femininas e masculinas</li>
+                <li>Não atendemos em feriados</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mb-0">
+            <label class="form-label" for="promptText">Texto de contexto</label>
+            <textarea
+              id="promptText"
+              class="form-control prompt-textarea"
+              rows="6"
+              name="promptText"
+              [(ngModel)]="model.promptText"
+              required
+            ></textarea>
+          </div>
+        </section>
+
+        <div *ngIf="error" class="alert alert-danger mt-4" style="white-space: pre-line;">
+          {{ error }}
         </div>
 
-        <textarea id="promptText" class="form-control" rows="4" name="promptText" [(ngModel)]="model.promptText"
-          required></textarea>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label class="form-label">Idioma</label>
-          <select class="form-select" name="languageCode" [(ngModel)]="model.languageCode" required>
-            <option value="pt-BR">Português (Brasil)</option>
-            <option value="pt-PT">Português (Portugal)</option>
-            <option value="en-US">English</option>
-          </select>
+        <div *ngIf="success" class="alert alert-success mt-4">
+          Conta criada com sucesso 🎉
         </div>
 
-        <div class="col-md-6 mb-3" *ngIf="!editing">
-          <label class="form-label">Ramo</label>
-          <select class="form-select" name="vertical" [(ngModel)]="model.vertical" required>
-            <option value="ecommerce">E-commerce</option>
-            <option value="clinic">Clínica</option>
-            <option value="salon">Salão</option>
-            <option value="general">Outros</option>
-          </select>
+        <div class="register-submit">
+          <button class="btn btn-primary register-submit-btn" [disabled]="loading || !f.valid">
+            {{ loading ? (editing ? 'Salvando...' : 'Criando conta...') : (editing ? 'Salvar alterações' : 'Salvar') }}
+          </button>
         </div>
-      </div>
-
-      <div *ngIf="error" class="alert alert-danger mt-3" style="white-space: pre-line;">
-        {{ error }}
-      </div>
-
-      <div *ngIf="success" class="alert alert-success mt-3">
-        Conta criada com sucesso 🎉
-      </div>
-
-      <button class="btn btn-primary w-100 mt-3" [disabled]="loading || !f.valid">
-        {{ loading ? (editing ? 'Salvando...' : 'Criando conta...') : (editing ? 'Salvar alterações' : 'Salvar') }}
-      </button>
-    </form>
+      </form>
+    </div>
   </div>
 </div>
