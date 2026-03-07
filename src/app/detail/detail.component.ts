@@ -31,11 +31,9 @@ export class DetailComponent implements OnInit {
         return;
       }
 
-      // ✅ Se veio do pagamento com sucesso
       const payment = this.route.snapshot.queryParamMap.get('payment');
       if (payment === 'success') {
         this.successMessage = 'Pagamento confirmado ✅ Sua inscrição foi renovada.';
-        // some sozinho após 5s (opcional)
         setTimeout(() => (this.successMessage = undefined), 5000);
       }
 
@@ -47,20 +45,6 @@ export class DetailComponent implements OnInit {
       this.loading = false;
     }
   }
-
-  private async load(uuid: string) {
-    this.loading = true;
-    this.error = undefined;
-
-    try {
-      this.client = await this.api.getClientDetail(uuid);
-    } catch (e: any) {
-      this.error = e.message ?? 'Failed to load client';
-    } finally {
-      this.loading = false;
-    }
-  }
-
 
   logout() {
     this.authService.logout();
@@ -77,6 +61,15 @@ export class DetailComponent implements OnInit {
     this.router.navigate([`/client/${this.client.uuid}/payment`]);
   }
 
+  goToWhatsappMessages() {
+    if (!this.client?.uuid) return;
+    this.router.navigate([`/client/${this.client.uuid}/whatsapp-messages`]);
+  }
+
+  goToWebMessages() {
+    if (!this.client?.uuid) return;
+    this.router.navigate([`/client/${this.client.uuid}/web-messages`]);
+  }
 
   languageLabel(code?: string): string {
     switch (code) {
@@ -105,29 +98,19 @@ export class DetailComponent implements OnInit {
 
   getSubscriptionType(subscriptionType: string | undefined): string {
     switch (subscriptionType) {
-      case 'FREE':
-        return 'Grátis';
-      case 'PAID':
-        return 'Pago';
-      default:
-        return subscriptionType ?? '-';
+      case 'FREE': return 'Grátis';
+      case 'PAID': return 'Pago';
+      default: return subscriptionType ?? '-';
     }
   }
 
   getSubscriptionStatus(status: string | undefined): string {
     switch (status) {
-      case 'PENDING':
-        return 'Pendente';
-      case 'ACTIVE':
-        return 'Ativo';
-      case 'PAUSED':
-        return 'Parado';
-      case 'CANCELED':
-        return 'Cancelado';
-      default:
-        return status ?? '-';
+      case 'PENDING': return 'Pendente';
+      case 'ACTIVE': return 'Ativo';
+      case 'PAUSED': return 'Parado';
+      case 'CANCELED': return 'Cancelado';
+      default: return status ?? '-';
     }
   }
-
-
 }

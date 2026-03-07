@@ -1,0 +1,66 @@
+.wa-page {
+    padding-bottom: 24px;
+}
+
+.wa-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.wa-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.wa-text {
+    max-width: 520px;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* deixa a coluna texto menos “quebradora” */
+.wa-text {
+    width: 55%;
+}
+
+.wa-bubble {
+  display: inline-block;
+  max-width: 100%;
+  border-radius: 10px;
+  padding: 10px 12px;
+  line-height: 1.35;
+  border: 1px solid #e5e7eb;
+  background: #f8f9fa;
+  box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+
+.wa-bubble-in {
+  background: #f8f9fa;
+}
+
+.wa-bubble-out {
+  background: #eef2ff; /* azul bem claro */
+}
+
+/* corpo: preserva quebras de linha e evita quebrar layout */
+.wa-bubble-body {
+    white-space: pre-wrap;
+    /* respeita \n */
+    word-break: break-word;
+    /* quebra palavras gigantes */
+    overflow-wrap: anywhere;
+    /* URL gigante não explode */
+    max-height: 140px;
+    /* limita altura */
+    overflow: auto;
+    /* scroll só dentro do balão */
+}
+
+/* opcional: tabela mais “compacta” */
+table td,
+table th {
+    vertical-align: top;
+}

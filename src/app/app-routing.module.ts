@@ -8,6 +8,8 @@ import { DetailComponent } from './detail/detail.component';
 import { DetalhePaymentComponent } from './detalhe-payment/detalhe-payment.component';
 import { StripeSuccessComponent } from './stripe-success/stripe-success.component';
 import { StripeCancelComponent } from './stripe-cancel/stripe-cancel.component';
+import { WhatsAppMessagesComponent } from './whatsapp/whatsapp-messages.component';
+import { WebMessagesComponent } from './web-messages/web-messages.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'chat', pathMatch: 'full' },
@@ -27,22 +29,34 @@ const routes: Routes = [
   {
     path: 'client/:uuid/payment',
     component: DetalhePaymentComponent,
-    canActivate: [authGuard] 
+    canActivate: [authGuard]
+  },
+
+  {
+    path: 'client/:uuid/whatsapp-messages',
+    component: WhatsAppMessagesComponent,
+    canActivate: [authGuard]
+  },
+
+  {
+    path: 'client/:uuid/web-messages',
+    component: WebMessagesComponent,
+    canActivate: [authGuard]
   },
 
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'chat', component: ChatWidgetComponent },
 
-  { 
-    path: 'stripe/success', 
+  {
+    path: 'stripe/success',
     component: StripeSuccessComponent,
-    canActivate: [authGuard] 
+    canActivate: [authGuard]
   },
-  { 
-    path: 'stripe/cancel', 
+  {
+    path: 'stripe/cancel',
     component: StripeCancelComponent,
-    canActivate: [authGuard] 
+    canActivate: [authGuard]
   },
 
   { path: '**', redirectTo: 'chat' }

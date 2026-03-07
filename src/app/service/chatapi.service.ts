@@ -6,6 +6,10 @@ import { RegisterModel } from '../model/register-model';
 import { ClientDetail } from '../model/detail.model';
 import { UpdateClientReq } from '../model/update-client.mode';
 import { parseApiError } from '../shared/api-error';
+import { WaMessagesDayQuery } from '../model/wa.messages.day.query.model';
+import { WaMessageDayResponseDTO } from '../model/wa.message.day.response.model';
+import { WebMessagesDayQuery } from '../model/web.messages.day.query.model';
+import { WebMessageDayResponseDTO } from '../model/web.message.day.response.model';
 
 type ChatReq = { clientId: string; sessionId: string; message: string };
 
@@ -14,14 +18,11 @@ type ChatReq = { clientId: string; sessionId: string; message: string };
 })
 export class ChatapiService {
 
-
   constructor(
     @Inject(APP_CONFIG) private config: AppConfig,
     private authService: AuthService,
     private router: Router
   ) { }
-
-
 
   /** Se receber 401/403, faz logout e redireciona pro login */
   private async handleAuthError(res: Response): Promise<void> {
@@ -82,7 +83,6 @@ export class ChatapiService {
     return res.json();
   }
 
-
   async getWidgetConfig(clientId: string): Promise<any> {
     const r = await fetch(`${this.config.apiBase}/api/v1/widget-config?clientUuid=${encodeURIComponent(clientId)}`, {
       method: 'GET'
@@ -108,5 +108,109 @@ export class ChatapiService {
     if (!res.ok) {
       throw await parseApiError(res, 'Falha ao atualizar');
     }
+  }
+
+  async listWaMessagesByDay(query: WaMessagesDayQuery): Promise<WaMessageDayResponseDTO> {
+    if (!query?.clientId) throw new Error('clientId é obrigatório');
+    if (!query?.day) throw new Error('day é obrigatório (yyyy-MM-dd)');
+
+    const token = this.authService.getToken();
+
+    const base = this.config.apiBase.replace(/\/+$/, '');
+    const url = new URL(`${base}/api/v1/wa/messages/day`);
+
+    url.searchParams.set('clientId', query.clientId);
+    url.searchParams.set('day', query.day);
+
+    if (query.tz) url.searchParams.set('tz', query.tz);
+    if (query.limit != null) url.searchParams.set('limit', String(query.limit));
+    if (query.cursor) url.searchParams.set('cursor', query.cursor);
+
+    const res = await fetch(url.toString(), {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        ...(token ? { 'Authorization': token } : {})
+      }
+    });
+
+    await this.handleAuthError(res);
+
+    if (!res.ok) {
+      throw await parseApiError(res, 'Falha ao buscar mensagens do WhatsApp');
+    }
+
+    return await res.json();
+  }
+
+  async listWaMessagesFirstPage(
+    clientId: string,
+    day: string,
+    tz?: string,
+    limit?: number
+  ): Promise<WaMessageDayResponseDTO> {
+    return this.listWaMessagesByDay({ clientId, day, tz, limit });
+  }
+
+  async listWaMessagesNextPage(
+    clientId: string,
+    day: string,
+    cursor: string,
+    tz?: string,
+    limit?: number
+  ): Promise<WaMessageDayResponseDTO> {
+    return this.listWaMessagesByDay({ clientId, day, tz, limit, cursor });
+  }
+
+  async listWebMessagesByDay(query: WebMessagesDayQuery): Promise<WebMessageDayResponseDTO> {
+    if (query?.clientUuid == null) throw new Error('clientId é obrigatório');
+    if (!query?.day) throw new Error('day é obrigatório (yyyy-MM-dd)');
+
+    const token = this.authService.getToken();
+
+    const base = this.config.apiBase.replace(/\/+$/, '');
+    const url = new URL(`${base}/api/v1/chat-messages/day`);
+
+    url.searchParams.set('clientId', query.clientUuid);
+    url.searchParams.set('day', query.day);
+
+    if (query.tz) url.searchParams.set('tz', query.tz);
+    if (query.limit != null) url.searchParams.set('limit', String(query.limit));
+    if (query.cursor) url.searchParams.set('cursor', query.cursor);
+
+    const res = await fetch(url.toString(), {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        ...(token ? { 'Authorization': token } : {})
+      }
+    });
+
+    await this.handleAuthError(res);
+
+    if (!res.ok) {
+      throw await parseApiError(res, 'Falha ao buscar mensagens da Web');
+    }
+
+    return await res.json();
+  }
+
+  async listWebMessagesFirstPage(
+    clientUuid: string,
+    day: string,
+    tz?: string,
+    limit?: number
+  ): Promise<WebMessageDayResponseDTO> {
+    return this.listWebMessagesByDay({ clientUuid, day, tz, limit });
+  }
+
+  async listWebMessagesNextPage(
+    clientUuid: string,
+    day: string,
+    cursor: string,
+    tz?: string,
+    limit?: number
+  ): Promise<WebMessageDayResponseDTO> {
+    return this.listWebMessagesByDay({ clientUuid, day, tz, limit, cursor });
   }
 }
