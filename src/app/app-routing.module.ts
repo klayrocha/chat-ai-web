@@ -10,6 +10,7 @@ import { StripeSuccessComponent } from './stripe-success/stripe-success.componen
 import { StripeCancelComponent } from './stripe-cancel/stripe-cancel.component';
 import { WhatsAppMessagesComponent } from './whatsapp/whatsapp-messages.component';
 import { WebMessagesComponent } from './web-messages/web-messages.component';
+import { LeadsComponent } from './leads/leads.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'chat', pathMatch: 'full' },
@@ -56,6 +57,12 @@ const routes: Routes = [
   {
     path: 'stripe/cancel',
     component: StripeCancelComponent,
+    canActivate: [authGuard]
+  },
+
+  {
+    path: 'client/:uuid/leads',
+    component: LeadsComponent,
     canActivate: [authGuard]
   },
 

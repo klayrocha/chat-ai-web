@@ -9,8 +9,8 @@
       <div class="brand-badge">Seu Assistente Inteligente</div>
       <h1>{{ client.companyName }}</h1>
       <p>
-        Gerencie os dados da sua conta, acompanhe mensagens do site e do WhatsApp e mantenha
-        sua configuração sempre atualizada.
+        Gerencie os dados da sua conta, acompanhe mensagens do site, do WhatsApp e os leads captados,
+        mantendo a sua configuração sempre atualizada.
       </p>
 
       <div class="brand-points">
@@ -20,7 +20,7 @@
         </div>
         <div class="brand-point">
           <span class="brand-point-icon">✓</span>
-          <span>Edite dados da empresa e do atendimento</span>
+          <span>Acompanhe os leads captados pelo widget</span>
         </div>
         <div class="brand-point" *ngIf="client.subscription">
           <span class="brand-point-icon">✓</span>
@@ -96,10 +96,10 @@
 
       <!-- AÇÕES -->
       <section class="detail-section">
-        <div class="detail-section-title">Mensagens</div>
+        <div class="detail-section-title">Mensagens e leads</div>
 
         <div class="row g-3">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="quick-card h-100">
               <div class="quick-card-icon">💬</div>
               <h6>Mensagens da Web</h6>
@@ -112,7 +112,7 @@
             </div>
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="quick-card h-100">
               <div class="quick-card-icon">🟢</div>
               <h6>Mensagens do WhatsApp</h6>
@@ -124,6 +124,19 @@
                 (click)="goToWhatsappMessages()"
                 [disabled]="client.whatsappType === 'human'">
                 Ver mensagens do WhatsApp
+              </button>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="quick-card h-100">
+              <div class="quick-card-icon">🎯</div>
+              <h6>Leads captados</h6>
+              <p>
+                Consulte os contactos captados pelo widget e acompanhe oportunidades comerciais.
+              </p>
+              <button class="btn btn-outline-dark w-100 mt-auto" (click)="goToLeads()">
+                Ver leads
               </button>
             </div>
           </div>

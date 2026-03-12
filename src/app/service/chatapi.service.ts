@@ -10,6 +10,8 @@ import { WaMessagesDayQuery } from '../model/wa.messages.day.query.model';
 import { WaMessageDayResponseDTO } from '../model/wa.message.day.response.model';
 import { WebMessagesDayQuery } from '../model/web.messages.day.query.model';
 import { WebMessageDayResponseDTO } from '../model/web.message.day.response.model';
+import { LeadListItemDTO } from '../model/lead-list-item.model';
+import { LeadDayResponseDTO } from '../model/lead-day-response.model';
 
 type ChatReq = { clientId: string; sessionId: string; message: string };
 
@@ -212,5 +214,60 @@ export class ChatapiService {
     limit?: number
   ): Promise<WebMessageDayResponseDTO> {
     return this.listWebMessagesByDay({ clientUuid, day, tz, limit, cursor });
+  }
+
+  async listLeadsByDay(
+    clientUuid: string,
+    day: string,
+    tz?: string,
+    limit?: number,
+    cursor?: string
+  ): Promise<LeadDayResponseDTO> {
+    const token = this.authService.getToken();
+
+    const base = this.config.apiBase.replace(/\/+$/, '');
+    const url = new URL(`${base}/api/v1/leads/day`);
+
+    url.searchParams.set('clientUuid', clientUuid);
+    url.searchParams.set('day', day);
+
+    if (tz) url.searchParams.set('tz', tz);
+    if (limit != null) url.searchParams.set('limit', String(limit));
+    if (cursor) url.searchParams.set('cursor', cursor);
+
+    const res = await fetch(url.toString(), {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        ...(token ? { 'Authorization': token } : {})
+      }
+    });
+
+    await this.handleAuthError(res);
+
+    if (!res.ok) {
+      throw await parseApiError(res, 'Falha ao buscar leads');
+    }
+
+    return await res.json();
+  }
+
+  async listLeadsFirstPage(
+    clientUuid: string,
+    day: string,
+    tz?: string,
+    limit?: number
+  ): Promise<LeadDayResponseDTO> {
+    return this.listLeadsByDay(clientUuid, day, tz, limit);
+  }
+
+  async listLeadsNextPage(
+    clientUuid: string,
+    day: string,
+    cursor: string,
+    tz?: string,
+    limit?: number
+  ): Promise<LeadDayResponseDTO> {
+    return this.listLeadsByDay(clientUuid, day, tz, limit, cursor);
   }
 }

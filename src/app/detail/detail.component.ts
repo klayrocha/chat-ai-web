@@ -113,4 +113,9 @@ export class DetailComponent implements OnInit {
       default: return status ?? '-';
     }
   }
+
+  goToLeads() {
+    if (!this.client?.uuid) return;
+    this.router.navigate([`/client/${this.client.uuid}/leads`]);
+  }
 }

@@ -15,6 +15,7 @@ import { StripeCancelComponent } from './stripe-cancel/stripe-cancel.component';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { WhatsAppMessagesComponent } from './whatsapp/whatsapp-messages.component';
 import { WebMessagesComponent } from './web-messages/web-messages.component';
+import { LeadsComponent } from './leads/leads.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { WebMessagesComponent } from './web-messages/web-messages.component';
     StripeCancelComponent,
     StripeSuccessComponent,
     WhatsAppMessagesComponent,
-    WebMessagesComponent
+    WebMessagesComponent,
+    LeadsComponent
   ],
   imports: [
     BrowserModule,
