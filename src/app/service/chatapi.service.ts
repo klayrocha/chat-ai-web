@@ -10,7 +10,6 @@ import { WaMessagesDayQuery } from '../model/wa.messages.day.query.model';
 import { WaMessageDayResponseDTO } from '../model/wa.message.day.response.model';
 import { WebMessagesDayQuery } from '../model/web.messages.day.query.model';
 import { WebMessageDayResponseDTO } from '../model/web.message.day.response.model';
-import { LeadListItemDTO } from '../model/lead-list-item.model';
 import { LeadDayResponseDTO } from '../model/lead-day-response.model';
 
 type ChatReq = { clientId: string; sessionId: string; message: string };
@@ -26,7 +25,6 @@ export class ChatapiService {
     private router: Router
   ) { }
 
-  /** Se receber 401/403, faz logout e redireciona pro login */
   private async handleAuthError(res: Response): Promise<void> {
     if (res.status === 401 || res.status === 403) {
       this.authService.logout();
@@ -34,18 +32,53 @@ export class ChatapiService {
     }
   }
 
+  private updateTokenFromResponse(res: Response): void {
+    this.authService.updateTokenFromResponse(res);
+  }
+
+  private async authorizedFetch(
+    input: string,
+    init?: RequestInit,
+    includeJsonContentType: boolean = false
+  ): Promise<Response> {
+    const headers: Record<string, string> = {
+      'Accept': 'application/json',
+      ...(includeJsonContentType ? { 'Content-Type': 'application/json' } : {}),
+      ...(init?.headers as Record<string, string> ?? {})
+    };
+
+    const finalHeaders = this.authService.buildAuthHeaders(headers);
+
+    const res = await fetch(input, {
+      ...init,
+      headers: finalHeaders
+    });
+
+    await this.handleAuthError(res);
+    this.updateTokenFromResponse(res);
+
+    return res;
+  }
+
   async sendMessage(req: ChatReq, apiBaseOverride?: string): Promise<string> {
     const base = (apiBaseOverride || this.config.apiBase).replace(/\/+$/, '');
 
     const res = await fetch(`${base}/api/v1/chat-ai`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
       body: JSON.stringify(req),
     });
 
     await this.handleAuthError(res);
+    this.updateTokenFromResponse(res);
 
-    if (!res.ok) throw await parseApiError(res, `Falha ao enviar mensagem`);
+    if (!res.ok) {
+      throw await parseApiError(res, 'Falha ao enviar mensagem');
+    }
+
     const data = await res.json();
     return data.answer ?? data.content ?? String(data);
   }
@@ -61,6 +94,7 @@ export class ChatapiService {
     });
 
     await this.handleAuthError(res);
+    this.updateTokenFromResponse(res);
 
     if (!res.ok) {
       throw await parseApiError(res, 'Falha no cadastro');
@@ -68,44 +102,40 @@ export class ChatapiService {
   }
 
   async getClientDetail(clientUUID: string): Promise<ClientDetail> {
-    const token = this.authService.getToken();
-    const res = await fetch(`${this.config.apiBase}/api/v1/clients/${clientUUID}`, {
-      headers: {
-        'Accept': 'application/json',
-        ...(token ? { 'Authorization': token } : {})
-      }
-    });
-
-    await this.handleAuthError(res);
+    const res = await this.authorizedFetch(
+      `${this.config.apiBase}/api/v1/clients/${clientUUID}`,
+      { method: 'GET' }
+    );
 
     if (!res.ok) {
       throw new Error(`HTTP ${res.status}`);
     }
 
-    return res.json();
+    return await res.json();
   }
 
   async getWidgetConfig(clientId: string): Promise<any> {
-    const r = await fetch(`${this.config.apiBase}/api/v1/widget-config?clientUuid=${encodeURIComponent(clientId)}`, {
-      method: 'GET'
-    });
-    return await r.json();
+    const res = await fetch(
+      `${this.config.apiBase}/api/v1/widget-config?clientUuid=${encodeURIComponent(clientId)}`,
+      { method: 'GET' }
+    );
+
+    if (!res.ok) {
+      throw await parseApiError(res, 'Falha ao buscar configuração do widget');
+    }
+
+    return await res.json();
   }
 
   async updateClient(req: UpdateClientReq): Promise<void> {
-    const token = this.authService.getToken();
-
-    const res = await fetch(`${this.config.apiBase}/api/v1/clients`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        ...(token ? { 'Authorization': token } : {})
+    const res = await this.authorizedFetch(
+      `${this.config.apiBase}/api/v1/clients`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(req)
       },
-      body: JSON.stringify(req)
-    });
-
-    await this.handleAuthError(res);
+      true
+    );
 
     if (!res.ok) {
       throw await parseApiError(res, 'Falha ao atualizar');
@@ -115,8 +145,6 @@ export class ChatapiService {
   async listWaMessagesByDay(query: WaMessagesDayQuery): Promise<WaMessageDayResponseDTO> {
     if (!query?.clientId) throw new Error('clientId é obrigatório');
     if (!query?.day) throw new Error('day é obrigatório (yyyy-MM-dd)');
-
-    const token = this.authService.getToken();
 
     const base = this.config.apiBase.replace(/\/+$/, '');
     const url = new URL(`${base}/api/v1/wa/messages/day`);
@@ -128,15 +156,7 @@ export class ChatapiService {
     if (query.limit != null) url.searchParams.set('limit', String(query.limit));
     if (query.cursor) url.searchParams.set('cursor', query.cursor);
 
-    const res = await fetch(url.toString(), {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        ...(token ? { 'Authorization': token } : {})
-      }
-    });
-
-    await this.handleAuthError(res);
+    const res = await this.authorizedFetch(url.toString(), { method: 'GET' });
 
     if (!res.ok) {
       throw await parseApiError(res, 'Falha ao buscar mensagens do WhatsApp');
@@ -168,8 +188,6 @@ export class ChatapiService {
     if (query?.clientUuid == null) throw new Error('clientId é obrigatório');
     if (!query?.day) throw new Error('day é obrigatório (yyyy-MM-dd)');
 
-    const token = this.authService.getToken();
-
     const base = this.config.apiBase.replace(/\/+$/, '');
     const url = new URL(`${base}/api/v1/chat-messages/day`);
 
@@ -180,15 +198,7 @@ export class ChatapiService {
     if (query.limit != null) url.searchParams.set('limit', String(query.limit));
     if (query.cursor) url.searchParams.set('cursor', query.cursor);
 
-    const res = await fetch(url.toString(), {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        ...(token ? { 'Authorization': token } : {})
-      }
-    });
-
-    await this.handleAuthError(res);
+    const res = await this.authorizedFetch(url.toString(), { method: 'GET' });
 
     if (!res.ok) {
       throw await parseApiError(res, 'Falha ao buscar mensagens da Web');
@@ -223,8 +233,6 @@ export class ChatapiService {
     limit?: number,
     cursor?: string
   ): Promise<LeadDayResponseDTO> {
-    const token = this.authService.getToken();
-
     const base = this.config.apiBase.replace(/\/+$/, '');
     const url = new URL(`${base}/api/v1/leads/day`);
 
@@ -235,15 +243,7 @@ export class ChatapiService {
     if (limit != null) url.searchParams.set('limit', String(limit));
     if (cursor) url.searchParams.set('cursor', cursor);
 
-    const res = await fetch(url.toString(), {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        ...(token ? { 'Authorization': token } : {})
-      }
-    });
-
-    await this.handleAuthError(res);
+    const res = await this.authorizedFetch(url.toString(), { method: 'GET' });
 
     if (!res.ok) {
       throw await parseApiError(res, 'Falha ao buscar leads');

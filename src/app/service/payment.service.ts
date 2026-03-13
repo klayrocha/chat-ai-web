@@ -6,6 +6,7 @@ import { parseApiError } from '../shared/api-error';
 
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
+
   constructor(
     @Inject(APP_CONFIG) private config: AppConfig,
     private auth: AuthService,
@@ -19,26 +20,45 @@ export class PaymentService {
     }
   }
 
-  async createStripeCheckout(plan: string): Promise<void> {
-    const token = this.auth.getToken();
-    const clientUuid = this.auth.getClientUuid();
+  private updateTokenFromResponse(res: Response): void {
+    this.auth.updateTokenFromResponse(res);
+  }
 
-    const res = await fetch(`${this.config.apiBase}/api/v1/stripe/checkout-session`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        ...(token ? { 'Authorization': token } : {}),
-      },
-      body: JSON.stringify({ plan, clientUuid }),
+  private async authorizedFetch(
+    input: string,
+    init?: RequestInit,
+    includeJsonContentType: boolean = false
+  ): Promise<Response> {
+    const headers: Record<string, string> = {
+      'Accept': 'application/json',
+      ...(includeJsonContentType ? { 'Content-Type': 'application/json' } : {}),
+      ...(init?.headers as Record<string, string> ?? {})
+    };
+
+    const finalHeaders = this.auth.buildAuthHeaders(headers);
+
+    const res = await fetch(input, {
+      ...init,
+      headers: finalHeaders
     });
 
-    // 🔐 Se não autenticado, vai para login
-    if (res.status === 401 || res.status === 403) {
-      this.auth.logout();
-      await this.router.navigate(['/login']);
-      return;
-    }
+    await this.handleAuthError(res);
+    this.updateTokenFromResponse(res);
+
+    return res;
+  }
+
+  async createStripeCheckout(plan: string): Promise<void> {
+    const clientUuid = this.auth.getClientUuid();
+
+    const res = await this.authorizedFetch(
+      `${this.config.apiBase}/api/v1/stripe/checkout-session`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ plan, clientUuid })
+      },
+      true
+    );
 
     if (!res.ok) {
       throw await parseApiError(res, 'Falha ao iniciar pagamento (Stripe)');
@@ -54,27 +74,16 @@ export class PaymentService {
     window.location.href = url;
   }
 
-
-
-
   async getStripeCheckoutStatus(sessionId: string): Promise<{ status: string; message?: string }> {
-    const token = this.auth.getToken();
-
-    const res = await fetch(
+    const res = await this.authorizedFetch(
       `${this.config.apiBase}/api/v1/stripe/checkout-session/${encodeURIComponent(sessionId)}/status`,
-      {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          ...(token ? { Authorization: token } : {}),
-        },
-      }
+      { method: 'GET' }
     );
 
-    await this.handleAuthError(res);
+    if (!res.ok) {
+      throw await parseApiError(res, 'Falha ao consultar status do pagamento (Stripe)');
+    }
 
-    if (!res.ok) throw await parseApiError(res, 'Falha ao consultar status do pagamento (Stripe)');
-
-    return res.json();
+    return await res.json();
   }
 }
