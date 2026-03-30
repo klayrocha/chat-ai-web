@@ -11,6 +11,9 @@ import { WaMessageDayResponseDTO } from '../model/wa.message.day.response.model'
 import { WebMessagesDayQuery } from '../model/web.messages.day.query.model';
 import { WebMessageDayResponseDTO } from '../model/web.message.day.response.model';
 import { LeadDayResponseDTO } from '../model/lead-day-response.model';
+import { LeadActionResponseDTO } from '../model/lead-action-response.model';
+import { LeadStatusUpdateRequest } from '../model/lead-status-update-request.model';
+import { LeadNoteRequest } from '../model/lead-note-request.model';
 
 type ChatReq = { clientId: string; sessionId: string; message: string };
 
@@ -39,12 +42,12 @@ export class ChatapiService {
   private async authorizedFetch(
     input: string,
     init?: RequestInit,
-    includeJsonContentType: boolean = false
+    includeJsonContentType = false
   ): Promise<Response> {
     const headers: Record<string, string> = {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       ...(includeJsonContentType ? { 'Content-Type': 'application/json' } : {}),
-      ...(init?.headers as Record<string, string> ?? {})
+      ...((init?.headers as Record<string, string>) ?? {})
     };
 
     const finalHeaders = this.authService.buildAuthHeaders(headers);
@@ -67,9 +70,9 @@ export class ChatapiService {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        Accept: 'application/json'
       },
-      body: JSON.stringify(req),
+      body: JSON.stringify(req)
     });
 
     await this.handleAuthError(res);
@@ -88,7 +91,7 @@ export class ChatapiService {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        Accept: 'application/json'
       },
       body: JSON.stringify(req)
     });
@@ -231,8 +234,12 @@ export class ChatapiService {
     day: string,
     tz?: string,
     limit?: number,
-    cursor?: string
+    cursor?: string,
+    status?: string
   ): Promise<LeadDayResponseDTO> {
+    if (!clientUuid) throw new Error('clientUuid é obrigatório');
+    if (!day) throw new Error('day é obrigatório (yyyy-MM-dd)');
+
     const base = this.config.apiBase.replace(/\/+$/, '');
     const url = new URL(`${base}/api/v1/leads/day`);
 
@@ -242,6 +249,7 @@ export class ChatapiService {
     if (tz) url.searchParams.set('tz', tz);
     if (limit != null) url.searchParams.set('limit', String(limit));
     if (cursor) url.searchParams.set('cursor', cursor);
+    if (status) url.searchParams.set('status', status);
 
     const res = await this.authorizedFetch(url.toString(), { method: 'GET' });
 
@@ -256,9 +264,10 @@ export class ChatapiService {
     clientUuid: string,
     day: string,
     tz?: string,
-    limit?: number
+    limit?: number,
+    status?: string
   ): Promise<LeadDayResponseDTO> {
-    return this.listLeadsByDay(clientUuid, day, tz, limit);
+    return this.listLeadsByDay(clientUuid, day, tz, limit, undefined, status);
   }
 
   async listLeadsNextPage(
@@ -266,8 +275,109 @@ export class ChatapiService {
     day: string,
     cursor: string,
     tz?: string,
-    limit?: number
+    limit?: number,
+    status?: string
   ): Promise<LeadDayResponseDTO> {
-    return this.listLeadsByDay(clientUuid, day, tz, limit, cursor);
+    return this.listLeadsByDay(clientUuid, day, tz, limit, cursor, status);
+  }
+
+  async markLeadContacted(
+    clientUuid: string,
+    leadId: number,
+    body?: LeadStatusUpdateRequest
+  ): Promise<LeadActionResponseDTO> {
+    const base = this.config.apiBase.replace(/\/+$/, '');
+    const url = new URL(`${base}/api/v1/leads/${leadId}/contacted`);
+    url.searchParams.set('clientUuid', clientUuid);
+
+    const res = await this.authorizedFetch(
+      url.toString(),
+      {
+        method: 'PATCH',
+        body: JSON.stringify(body ?? {})
+      },
+      true
+    );
+
+    if (!res.ok) {
+      throw await parseApiError(res, 'Falha ao marcar lead como contactado');
+    }
+
+    return await res.json();
+  }
+
+  async markLeadScheduled(
+    clientUuid: string,
+    leadId: number,
+    body?: LeadStatusUpdateRequest
+  ): Promise<LeadActionResponseDTO> {
+    const base = this.config.apiBase.replace(/\/+$/, '');
+    const url = new URL(`${base}/api/v1/leads/${leadId}/scheduled`);
+    url.searchParams.set('clientUuid', clientUuid);
+
+    const res = await this.authorizedFetch(
+      url.toString(),
+      {
+        method: 'PATCH',
+        body: JSON.stringify(body ?? {})
+      },
+      true
+    );
+
+    if (!res.ok) {
+      throw await parseApiError(res, 'Falha ao marcar lead como agendado');
+    }
+
+    return await res.json();
+  }
+
+  async markLeadLost(
+    clientUuid: string,
+    leadId: number,
+    body?: LeadStatusUpdateRequest
+  ): Promise<LeadActionResponseDTO> {
+    const base = this.config.apiBase.replace(/\/+$/, '');
+    const url = new URL(`${base}/api/v1/leads/${leadId}/lost`);
+    url.searchParams.set('clientUuid', clientUuid);
+
+    const res = await this.authorizedFetch(
+      url.toString(),
+      {
+        method: 'PATCH',
+        body: JSON.stringify(body ?? {})
+      },
+      true
+    );
+
+    if (!res.ok) {
+      throw await parseApiError(res, 'Falha ao marcar lead como perdido');
+    }
+
+    return await res.json();
+  }
+
+  async appendLeadNote(
+    clientUuid: string,
+    leadId: number,
+    body: LeadNoteRequest
+  ): Promise<LeadActionResponseDTO> {
+    const base = this.config.apiBase.replace(/\/+$/, '');
+    const url = new URL(`${base}/api/v1/leads/${leadId}/notes`);
+    url.searchParams.set('clientUuid', clientUuid);
+
+    const res = await this.authorizedFetch(
+      url.toString(),
+      {
+        method: 'PATCH',
+        body: JSON.stringify(body)
+      },
+      true
+    );
+
+    if (!res.ok) {
+      throw await parseApiError(res, 'Falha ao adicionar nota ao lead');
+    }
+
+    return await res.json();
   }
 }

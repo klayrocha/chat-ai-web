@@ -1,147 +1,264 @@
 <div class="web-page">
+  <div class="web-shell">
 
-    <div class="web-shell">
+    <div class="web-brand">
+      <div class="brand-badge">Seu Assistente Inteligente</div>
+      <h1>Leads captados</h1>
+      <p>
+        Consulte os contactos captados pelo widget do seu site.
+        Use os filtros por dia e status para acompanhar oportunidades comerciais geradas em cada período.
+      </p>
 
-        <div class="web-brand">
-            <div class="brand-badge">Seu Assistente Inteligente</div>
-            <h1>Leads captados</h1>
-            <p>
-                Consulte os contactos captados pelo widget do seu site.
-                Use o filtro por dia para acompanhar oportunidades comerciais geradas em cada período.
-            </p>
-
-            <div class="brand-points">
-                <div class="brand-point">
-                    <span class="brand-point-icon">✓</span>
-                    <span>Veja nome, WhatsApp, email e intenção do lead</span>
-                </div>
-                <div class="brand-point">
-                    <span class="brand-point-icon">✓</span>
-                    <span>Filtre por dia para localizar leads mais recentes</span>
-                </div>
-                <div class="brand-point">
-                    <span class="brand-point-icon">✓</span>
-                    <span>Carregue mais resultados sem perder performance</span>
-                </div>
-            </div>
+      <div class="brand-points">
+        <div class="brand-point">
+          <span class="brand-point-icon">✓</span>
+          <span>Veja nome, WhatsApp, email, intenção e procedimento do lead</span>
         </div>
-
-        <div class="card web-card shadow-lg">
-            <div class="web-topbar">
-                <button class="btn btn-outline-secondary btn-topbar" (click)="goBack()">
-                    Voltar para detalhes
-                </button>
-            </div>
-
-            <div class="web-card-head">
-                <h3>Histórico de leads captados</h3>
-                <p class="web-subtitle">
-                    Navegue pelos leads captados pelo widget e acompanhe as oportunidades geradas.
-                </p>
-            </div>
-
-            <section class="web-section">
-                <div class="web-section-title">Filtro</div>
-
-                <div class="row g-2 align-items-end">
-                    <div class="col-sm-4">
-                        <label class="form-label">Dia</label>
-                        <input class="form-control" type="date" [value]="day"
-                            (change)="onChangeDay(($any($event.target)).value)" />
-                    </div>
-                </div>
-            </section>
-
-            <div *ngIf="error" class="alert alert-danger mt-3">
-                {{ error }}
-            </div>
-
-            <div *ngIf="loading" class="web-loading">
-                <div class="spinner-border"></div>
-            </div>
-
-            <div *ngIf="!loading && items.length === 0" class="alert alert-warning mt-3">
-                Nenhum lead encontrado para este dia.
-            </div>
-
-            <section *ngIf="items.length > 0" class="web-section">
-                <div class="web-section-title">Resultados</div>
-
-                <div class="web-list">
-                    <div class="web-message-card" *ngFor="let lead of items">
-
-                        <div class="lead-header">
-                            <div class="lead-status-badges">
-                                <span class="lead-badge lead-badge-status" [ngClass]="statusClass(lead.status)">
-                                    {{ getStatusDescription(lead.status) }}
-                                </span>
-
-                                <span class="lead-badge lead-badge-intent" *ngIf="lead.intent">
-                                    {{ getIntentDescription(lead.intent) }}
-                                </span>
-
-                                <span class="lead-badge lead-badge-handoff" *ngIf="lead.handoffReason">
-                                    {{ getHandoffDescription(lead.handoffReason) }}
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="web-message-meta lead-meta-grid">
-                            <div class="web-meta-item">
-                                <span class="web-meta-label">Data</span>
-                                <span class="web-meta-value">{{ lead.createdAt | date:'dd/MM/yyyy HH:mm:ss' }}</span>
-                            </div>
-
-                            <div class="web-meta-item">
-                                <span class="web-meta-label">Nome</span>
-                                <span class="web-meta-value">{{ lead.leadName || '-' }}</span>
-                            </div>
-
-                            <div class="web-meta-item">
-                                <span class="web-meta-label">WhatsApp</span>
-                                <span class="web-meta-value">{{ lead.leadWhatsapp || '-' }}</span>
-                            </div>
-
-                            <div class="web-meta-item">
-                                <span class="web-meta-label">Email</span>
-                                <span class="web-meta-value">{{ lead.leadEmail || '-' }}</span>
-                            </div>
-
-                            <div class="web-meta-item">
-                                <span class="web-meta-label">Sessão</span>
-                                <span class="web-meta-value lead-session">{{ lead.sessionId }}</span>
-                            </div>
-
-                            <div class="web-meta-item">
-                                <span class="web-meta-label">Origem</span>
-                                <span class="web-meta-value">{{ getSourceDescription(lead.source) }}</span>
-                            </div>
-                        </div>
-
-                        <div class="web-bubble web-bubble-question" *ngIf="lead.firstMessage">
-                            <div class="web-bubble-label">Primeira mensagem</div>
-                            <div class="web-bubble-body">
-                                {{ lead.firstMessage }}
-                            </div>
-                        </div>
-
-                        <div class="web-bubble web-bubble-answer" *ngIf="lead.lastMessage">
-                            <div class="web-bubble-label">Última mensagem</div>
-                            <div class="web-bubble-body">
-                                {{ lead.lastMessage }}
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="web-footer-actions">
-                    <button class="btn btn-outline-primary" (click)="loadMore()"
-                        [disabled]="loading || !hasMore || !nextCursor">
-                        Carregar mais
-                    </button>
-                </div>
-            </section>
+        <div class="brand-point">
+          <span class="brand-point-icon">✓</span>
+          <span>Filtre por dia e status com consulta real ao backend</span>
         </div>
+        <div class="brand-point">
+          <span class="brand-point-icon">✓</span>
+          <span>Carregue mais resultados sem perder consistência na paginação</span>
+        </div>
+      </div>
     </div>
+
+    <div class="card web-card shadow-lg">
+      <div class="web-topbar">
+        <button class="btn btn-outline-secondary btn-topbar" (click)="goBack()">
+          Voltar para detalhes
+        </button>
+      </div>
+
+      <div class="web-card-head">
+        <h3>Histórico de leads captados</h3>
+        <p class="web-subtitle">
+          Navegue pelos leads captados pelo widget e acompanhe as oportunidades geradas.
+        </p>
+      </div>
+
+      <section class="web-section">
+        <div class="web-section-title">Filtro</div>
+
+        <div class="row g-2 align-items-end">
+          <div class="col-sm-4">
+            <label class="form-label">Dia</label>
+            <input
+              class="form-control"
+              type="date"
+              [value]="day"
+              (change)="onChangeDay(($any($event.target)).value)" />
+          </div>
+
+          <div class="col-sm-4">
+            <label class="form-label">Status</label>
+            <select
+              class="form-control"
+              [value]="statusFilter"
+              (change)="onChangeStatusFilter(($any($event.target)).value)">
+              <option value="">Todos</option>
+              <option value="new">Novo</option>
+              <option value="qualified">Qualificado</option>
+              <option value="handoff_pending">Aguardando contacto</option>
+              <option value="contacted">Contactado</option>
+              <option value="scheduled">Agendado</option>
+              <option value="lost">Perdido</option>
+            </select>
+          </div>
+
+          <div class="col-sm-4">
+            <div class="filter-summary" *ngIf="statusFilter">
+              <span class="filter-summary-label">Status ativo</span>
+              <span class="filter-summary-value">{{ getStatusDescription(statusFilter) }}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div *ngIf="error" class="alert alert-danger mt-3">
+        {{ error }}
+      </div>
+
+      <div *ngIf="success" class="alert alert-success mt-3">
+        {{ success }}
+      </div>
+
+      <div *ngIf="loading" class="web-loading">
+        <div class="spinner-border"></div>
+      </div>
+
+      <div *ngIf="!loading && items.length === 0" class="alert alert-warning mt-3">
+        Nenhum lead encontrado para os filtros selecionados.
+      </div>
+
+      <section *ngIf="items.length > 0" class="web-section">
+        <div class="web-results-head">
+          <div class="web-section-title mb-0">Resultados</div>
+          <div class="web-results-meta">
+            <span class="results-count">{{ items.length }} lead(s) carregado(s)</span>
+          </div>
+        </div>
+
+        <div class="lead-compact-list">
+          <div class="lead-compact-card" *ngFor="let lead of items; trackBy: trackByLeadId">
+
+            <div class="lead-top-row">
+              <div class="lead-top-left">
+                <div class="lead-badges-row">
+                  <span class="lead-badge lead-badge-status" [ngClass]="statusClass(lead.status)">
+                    {{ getStatusDescription(lead.status) }}
+                  </span>
+                </div>
+
+                <div class="lead-name-row">
+                  <span class="lead-primary-name">{{ lead.leadName || 'Sem nome' }}</span>
+                </div>
+
+                <div class="lead-contact-row">
+                  <span class="lead-phone">{{ lead.leadWhatsapp || '-' }}</span>
+                  <span class="lead-dot" *ngIf="lead.leadEmail">•</span>
+                  <span class="lead-email" *ngIf="lead.leadEmail">{{ lead.leadEmail }}</span>
+                </div>
+              </div>
+
+              <div class="lead-top-right">
+                <div class="lead-date">
+                  {{ formatFriendlyDate(lead.createdAt) }}
+                </div>
+                <div class="lead-date-sub" *ngIf="lead.updatedAt">
+                  Atualizado: {{ formatFriendlyDate(lead.updatedAt) }}
+                </div>
+              </div>
+            </div>
+
+            <div class="lead-middle-row">
+              <div class="lead-summary-chip">
+                <span class="lead-summary-label">Procedimento</span>
+                <span class="lead-summary-value">{{ formatProcedureInterest(lead.procedureInterest) }}</span>
+              </div>
+
+              <div class="lead-summary-chip">
+                <span class="lead-summary-label">Período</span>
+                <span class="lead-summary-value">{{ getPreferredPeriodDescription(lead.preferredPeriod) }}</span>
+              </div>
+
+              <div class="lead-summary-chip">
+                <span class="lead-summary-label">Origem</span>
+                <span class="lead-summary-value">{{ getSourceDescription(lead.source) }}</span>
+              </div>
+            </div>
+
+            <div class="lead-actions">
+              <button
+                class="btn btn-outline-success btn-sm"
+                (click)="openWhatsApp(lead)"
+                [disabled]="!canOpenWhatsApp(lead)">
+                WhatsApp
+              </button>
+
+              <button
+                class="btn btn-outline-primary btn-sm"
+                (click)="markContacted(lead)"
+                [disabled]="actionLoadingId === lead.id || !canMarkContacted(lead)">
+                Contactado
+              </button>
+
+              <button
+                class="btn btn-outline-success btn-sm"
+                (click)="markScheduled(lead)"
+                [disabled]="actionLoadingId === lead.id || !canMarkScheduled(lead)">
+                Agendado
+              </button>
+
+              <button
+                class="btn btn-outline-danger btn-sm"
+                (click)="markLost(lead)"
+                [disabled]="actionLoadingId === lead.id || !canMarkLost(lead)">
+                Perdido
+              </button>
+
+              <button
+                class="btn btn-outline-secondary btn-sm"
+                (click)="addNote(lead)"
+                [disabled]="actionLoadingId === lead.id">
+                Nota
+              </button>
+
+              <button
+                class="btn btn-outline-dark btn-sm"
+                type="button"
+                (click)="toggleExpand(lead.id)">
+                {{ isExpanded(lead.id) ? 'Ocultar detalhes' : 'Detalhes' }}
+              </button>
+            </div>
+
+            <div class="lead-compact-extra" *ngIf="isExpanded(lead.id)">
+              <div class="lead-extra-grid">
+                <div class="lead-extra-item">
+                  <span class="lead-extra-label">Origem</span>
+                  <span class="lead-extra-value">{{ getSourceDescription(lead.source) }}</span>
+                </div>
+
+                <div class="lead-extra-item">
+                  <span class="lead-extra-label">Email</span>
+                  <span class="lead-extra-value">{{ lead.leadEmail || '-' }}</span>
+                </div>
+
+                <div class="lead-extra-item">
+                  <span class="lead-extra-label">Intenção</span>
+                  <span class="lead-extra-value">{{ getIntentDescription(lead.intent) }}</span>
+                </div>
+              </div>
+
+              <div class="web-bubble web-bubble-question" *ngIf="lead.firstMessage">
+                <div class="web-bubble-label">Primeira mensagem</div>
+                <div class="web-bubble-body">
+                  {{ lead.firstMessage }}
+                </div>
+              </div>
+
+              <div class="web-bubble web-bubble-answer" *ngIf="lead.lastMessage">
+                <div class="web-bubble-label">Última mensagem</div>
+                <div class="web-bubble-body">
+                  {{ lead.lastMessage }}
+                </div>
+              </div>
+
+              <div class="web-bubble web-bubble-note" *ngIf="hasVisibleNotes(lead.notes)">
+                <div class="web-bubble-label">Observações</div>
+
+                <div class="lead-notes-list">
+                  <div
+                    class="lead-note-item"
+                    *ngFor="let note of getVisibleNotes(lead.notes); trackBy: trackByNoteIndex">
+
+                    <div class="lead-note-head">
+                      <span class="lead-note-tag">{{ note.label }}</span>
+                      <span class="lead-note-date" *ngIf="note.date">{{ note.date }}</span>
+                    </div>
+
+                    <div class="lead-note-value">
+                      {{ note.value }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="web-footer-actions">
+          <button
+            class="btn btn-outline-primary"
+            (click)="loadMore()"
+            [disabled]="loading || !hasMore || !nextCursor">
+            {{ loading ? 'Carregando...' : 'Carregar mais' }}
+          </button>
+        </div>
+      </section>
+    </div>
+  </div>
 </div>
