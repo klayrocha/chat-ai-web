@@ -43,7 +43,7 @@ export class ChatWidgetComponent implements OnInit {
 
     this.messages.push({ role: 'assistant', text: 'Olá! Como posso ajudar?' });
 
-    const cfg = await this.api.getWidgetConfig(this.clientId);
+    const cfg = await this.api.getWidgetConfig(this.clientId, this.apiBase);
 
     this.whatsappType = (cfg?.whatsappType ?? 'human').toString() as any;
     this.whatsappNumber = (cfg?.whatsappNumber ?? '').replace(/\D/g, '');

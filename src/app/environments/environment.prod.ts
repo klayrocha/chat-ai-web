@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBase: 'https://www.seuassistenteinteligente.com/backend',
+  apiBase: 'https://www.atenclin.com/backend',
 };

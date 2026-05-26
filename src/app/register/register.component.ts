@@ -27,7 +27,7 @@ export class RegisterComponent {
     promptText: '',
     companyWebsiteUrl: '',
     languageCode: 'pt-BR',
-    vertical: 'ecommerce',
+    vertical: 'aesthetic_clinic',
     showWhatsapp: 'yes',
     whatsappType: 'human',
   };

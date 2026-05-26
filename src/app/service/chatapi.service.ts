@@ -21,12 +21,11 @@ type ChatReq = { clientId: string; sessionId: string; message: string };
   providedIn: 'root'
 })
 export class ChatapiService {
-
   constructor(
     @Inject(APP_CONFIG) private config: AppConfig,
     private authService: AuthService,
     private router: Router
-  ) { }
+  ) {}
 
   private async handleAuthError(res: Response): Promise<void> {
     if (res.status === 401 || res.status === 403) {
@@ -86,6 +85,26 @@ export class ChatapiService {
     return data.answer ?? data.content ?? String(data);
   }
 
+  async getWidgetConfig(clientId: string, apiBaseOverride?: string): Promise<any> {
+    const base = (apiBaseOverride || this.config.apiBase).replace(/\/+$/, '');
+
+    const res = await fetch(
+      `${base}/api/v1/widget-config?clientUuid=${encodeURIComponent(clientId)}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json'
+        }
+      }
+    );
+
+    if (!res.ok) {
+      throw await parseApiError(res, 'Falha ao buscar configuração do widget');
+    }
+
+    return await res.json();
+  }
+
   async registerClient(req: RegisterModel): Promise<void> {
     const res = await fetch(`${this.config.apiBase}/api/v1/clients`, {
       method: 'POST',
@@ -112,19 +131,6 @@ export class ChatapiService {
 
     if (!res.ok) {
       throw new Error(`HTTP ${res.status}`);
-    }
-
-    return await res.json();
-  }
-
-  async getWidgetConfig(clientId: string): Promise<any> {
-    const res = await fetch(
-      `${this.config.apiBase}/api/v1/widget-config?clientUuid=${encodeURIComponent(clientId)}`,
-      { method: 'GET' }
-    );
-
-    if (!res.ok) {
-      throw await parseApiError(res, 'Falha ao buscar configuração do widget');
     }
 
     return await res.json();

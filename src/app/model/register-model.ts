@@ -1,4 +1,4 @@
-export type Vertical = 'ecommerce' | 'clinic' | 'salon' | 'general';
+export type Vertical = 'ecommerce' | 'clinic' | 'salon' | 'general' | 'aesthetic_clinic';
 
 export class RegisterModel {
   uuid?: string;
